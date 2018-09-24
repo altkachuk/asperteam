@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/appbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:background="#f9f9f7">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginBottom="63dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/photoImage"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    app:srcCompat="@mipmap/ic_launcher"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"/>
+
+                <TextView
+                    android:id="@+id/editPhotoButton"
+                    style="@style/LoginText"
+                    android:text="@string/edit_photo"
+                    android:layout_height="36dp"
+                    android:paddingTop="8dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:background="@drawable/background_facebook_button"
+                    android:textColor="#ffffff"
+                    android:layout_below="@+id/photoImage"
+                    android:layout_marginTop="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/editPhotoButton">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/first_name"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/firstNameEditText"
+                            android:text="Antonio"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/last_name"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/lastNameEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileDateSpinnerView
+                        android:id="@+id/birthdayEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_date_spinner"
+                        app:title_res="@string/birthday">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileDateSpinnerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView
+                        android:id="@+id/sexEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_spinner"
+                        app:title_res="@string/sex_title">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/experience_title"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/experienceEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/function"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/functionEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/company"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/companyEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/duration"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/durationEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"
+                            android:inputType="numberDecimal"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/emailEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/phone"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp" />
+
+                        <EditText
+                            android:id="@+id/phoneEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"
+                            android:inputType="phone"
+                            android:maxLength="13"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/emergency_contact"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/emergencyContactEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"
+                            android:inputType="phone"
+                            android:maxLength="13"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/personal_address"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/personalAddressEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/company_address"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/companyAddressEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView
+                        android:id="@+id/leftHanddedItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_spinner"
+                        app:title_res="@string/left_or_right_handed">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView
+                        android:id="@+id/rqthRecognitionEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_spinner"
+                        app:title_res="@string/rqth_recognition">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileDateSpinnerView
+                        android:id="@+id/rqthRecognitionRenewDtEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_date_spinner"
+                        app:title_res="@string/rqth_recognition_renew_dt">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileDateSpinnerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mdph_notification"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/mdphNotificationEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView
+                        android:id="@+id/jobConversionByClinicEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_spinner"
+                        app:title_res="@string/job_conversion_by_clinic">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/job_conversion_wanted"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/jobConversionWantedEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/job_conversion_approved_by_company"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/jobConversionApprovedByCompanyEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/language"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <com.cyplay.atproj.asperteam.ui.customview.MultiSelectionSpinner
+                            android:id="@+id/languageSpinner"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp">
+                        </com.cyplay.atproj.asperteam.ui.customview.MultiSelectionSpinner>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/talent_or_hobbies"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/talentOrHobbiesEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/last_qualification"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/lastQualificationEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView
+                        android:id="@+id/activitySectorEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_spinner"
+                        app:title_res="@string/activity_sector">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#19000000"
+                        android:layout_marginTop="16dp"></RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/subscribed_at"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/subscribedAtEditText"
+                            android:text="Value"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView
+                        android:id="@+id/shareBestPracticeEditItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:view_resource="@layout/view_profile_spinner"
+                        app:title_res="@string/share_best_practice">
+                    </com.cyplay.atproj.asperteam.ui.customview.ProfileSpinnerView>
+
+                </LinearLayout>
+
+
+
+
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <fragment
+            android:id="@+id/popupFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:name="com.cyplay.atproj.asperteam.ui.fragment.base.BasePopupFragment"
+            app:layout_popup="@layout/fragment_base_popup"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/appbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:background="#f9f9f7">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_marginBottom="63dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/photoImage"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    app:srcCompat="@mipmap/ic_launcher"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"/>
+
+                <TextView
+                    android:id="@+id/editPhotoButton"
+                    style="@style/LoginText"
+                    android:text="@string/edit_photo"
+                    android:layout_height="36dp"
+                    android:paddingTop="8dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:background="@drawable/background_facebook_button"
+                    android:textColor="#ffffff"
+                    android:layout_below="@+id/photoImage"
+                    android:layout_marginTop="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/editPhotoButton">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/first_name"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/firstNameEditText"
+                            android:text="Antonio"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/last_name"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/lastNameEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/company"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/companyEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/emailEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/phone"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/phoneEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/experience_title"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/experienceEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/office_number"
+                            style="@style/ProfileTextTitle"
+                            android:layout_marginLeft="40dp"/>
+
+                        <EditText
+                            android:id="@+id/officeNumberEditText"
+                            android:text="Summers"
+                            style="@style/EditTextView"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <fragment
+            android:id="@+id/popupFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:name="com.cyplay.atproj.asperteam.ui.fragment.base.BasePopupFragment"
+            app:layout_popup="@layout/fragment_base_popup"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

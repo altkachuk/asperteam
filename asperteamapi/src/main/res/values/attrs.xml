@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyFragment">
+        <attr name="role_type" format="enum">
+            <enum name="patient" value="1"/>
+            <enum name="coach" value="2"/>
+            <enum name="permanent_coach" value="3"/>
+            <enum name="profile_manager" value="4"/>
+            <enum name="hr_manager" value="5"/>
+            <enum name="tutor" value="6"/>
+            <enum name="disability_manger" value="7"/>
+        </attr>
+        <attr name="stressSrc" format="string" />
+        <attr name="stressEmptySrc" format="integer" />
+        <attr name="layout_popup" format="string" />
+        <attr name="view_resource" format="integer" />
+        <attr name="title_res" format="integer" />
+    </declare-styleable>
+</resources>

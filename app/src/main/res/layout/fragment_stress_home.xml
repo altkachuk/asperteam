@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_scale_home">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="#4e7b9f"
+        android:textSize="15dp"
+        android:text="@string/scale_title"/>
+    
+    <com.cyplay.atproj.asperteam.ui.customview.StressScaleView
+        android:id="@+id/stressScaleView"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        app:stressSrc="@drawable/scale"
+        app:stressEmptySrc="@drawable/scale_empty"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_centerHorizontal="true">
+
+    </com.cyplay.atproj.asperteam.ui.customview.StressScaleView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/relaxed"
+        android:layout_below="@+id/stressScaleView"
+        android:layout_alignStart="@+id/stressScaleView"
+        android:textColor="#7e93a5"
+        android:textSize="13dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="75dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stress"
+        android:layout_below="@+id/stressScaleView"
+        android:layout_alignEnd="@+id/stressScaleView"
+        android:textColor="#7e93a5"
+        android:textSize="13dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="75dp"/>
+
+    <include layout="@layout/view_stress_popup"
+        android:layout_width="218dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stressScaleView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="75dp"/>
+
+    <include layout="@layout/progress_bar" />
+
+</RelativeLayout>

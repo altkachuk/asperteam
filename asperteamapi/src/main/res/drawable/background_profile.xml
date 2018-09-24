@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_profile"/>
+    <item>
+        <shape
+            android:shape="rectangle">
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item android:width="160dp" android:height="160dp" android:gravity="center">
+        <shape android:shape="oval">
+            <stroke android:color="#a9c1d4" android:width="1dp" />
+        </shape>
+    </item>
+
+    <item android:width="280dp" android:height="280dp" android:gravity="center">
+        <shape android:shape="oval">
+            <stroke android:color="#a9c1d4" android:width="1dp" />
+        </shape>
+    </item>
+
+    <item android:width="400dp" android:height="400dp" android:gravity="center">
+        <shape android:shape="oval">
+            <stroke android:color="#a9c1d4" android:width="1dp" />
+        </shape>
+    </item>
+
+</layer-list>

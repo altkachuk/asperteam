@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4e7b9f</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#4C789A</color>
+
+    <color name="colorLinkButton">#284760</color>
+    <color name="colorWhite">#ffffff</color>
+
+    <color name="colorPopupTitle">#4e7b9f</color>
+    <color name="colorPopupDescription">#173044</color>
+    <color name="colorPopupNegativeText">#984c4c</color>
+    <color name="colorPopupPositiveText">#316062</color>
+    <color name="colorImageCircleStroke">#7fb5e0</color>
+
+    <color name="colorMoreRelaxed">#255053</color>
+    <color name="colorStable">#315572</color>
+    <color name="colorMoreStressed">#9C171A</color>
+
+    <color name="colorDateChooserText">#ffffff</color>
+    <color name="colorDateChooserTextNotActive">#336699</color>
+
+    <color name="colorChartBackground">#00000000</color>
+    <color name="colorChartLine">#34CBFE</color>
+    <color name="colorChartStressLevel">#E36B10</color>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_adviser_home">
+
+    <TextView
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:text="@string/the_trick_of_my_community"
+        android:textColor="#4e7b9f"
+        android:layout_marginTop="25dp"
+        android:textSize="13dp"/>
+    
+    
+    <ImageView
+        android:id="@+id/photoImage"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        app:srcCompat="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/photoImage"
+        android:text="Matthieu"
+        android:textColor="#4e7b9f"
+        android:textSize="12dp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/ageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/nameText"
+        android:text="23 ans"
+        android:textColor="#999999"
+        android:textSize="12dp"
+        android:layout_marginTop="1dp"/>
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ageText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        android:text="J’ai repéré que l’après midi, il y a beaucoup de bruit sur l’open space et cela me fatigue voire me stresse. Mon astuce, je porte un casque anti bruit ou je me mets de la musique douce pendant 2 heures"
+        android:textAlignment="center"
+        android:textColor="#173044"
+        android:textSize="13dp" />
+
+    <include layout="@layout/progress_bar" />
+
+</RelativeLayout>

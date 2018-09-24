@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginTop="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:id="@+id/titleText"
+        style="@style/ProfileTextTitle"
+        android:layout_marginLeft="40dp"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/background_edit_text"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <Spinner
+            android:id="@+id/yearSpinnerView"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:spinnerMode="dropdown"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"/>
+
+        <Spinner
+            android:id="@+id/monthSpinnerView"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:spinnerMode="dropdown"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/yearSpinnerView"/>
+
+        <Spinner
+            android:id="@+id/daySpinnerView"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:spinnerMode="dropdown"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/monthSpinnerView"/>
+
+    </RelativeLayout>
+
+    <include layout="@layout/progress_bar" />
+
+</RelativeLayout>

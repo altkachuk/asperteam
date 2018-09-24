@@ -1,0 +1,117 @@
+<resources>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="AppTheme.AppBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextAppearance">@style/MenuTextStyle</item>
+        <item name="android:actionMenuTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="MenuTextStyle">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/metropolis</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/metropolis</item>
+    </style>
+    
+    <style name="LoginText">
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="LoginTextView" parent="LoginText">
+        <item name="android:background">@drawable/background_login_text</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingTop">0dp</item>
+    </style>
+
+    <style name="EditTextView" parent="LoginTextView">
+        <item name="android:background">@drawable/background_edit_text</item>
+    </style>
+
+    <style name="PopupTextTitle">
+        <item name="android:textColor">@color/colorPopupTitle</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PopupTextDescription">
+        <item name="android:textColor">@color/colorPopupDescription</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    
+    <style name="PopupButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PopupNegativeButton" parent="PopupButton">
+        <item name="android:textColor">@color/colorPopupNegativeText</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+
+    <style name="PopupPositiveeButton" parent="PopupButton">
+        <item name="android:textColor">@color/colorPopupPositiveText</item>
+        <item name="android:layout_marginLeft">8dp</item>
+    </style>
+    
+    <style name="ProfileTextTitle">
+        <item name="android:textColor">#4e7b9f</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ProfileTextValue">
+        <item name="android:textColor">#173044</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+    </style>
+
+</resources>

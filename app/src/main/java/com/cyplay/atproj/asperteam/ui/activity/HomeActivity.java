@@ -48,8 +48,8 @@ public class HomeActivity extends BaseMenuActivity {
     }
 
     @Override
-    protected void onStress(float stressLevel) {
-        stressHomeFragment.onStress(stressLevel);
+    protected void onStress(float stressLevel, int rri) {
+        stressHomeFragment.onStress(stressLevel, rri);
     }
 
     @Override

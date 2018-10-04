@@ -27,6 +27,7 @@ public class LocationManager extends Service implements LocationListener {
     private Context _context;
     private android.location.LocationManager _locationManager;
     private int _stressLevel;
+    private int _rri;
     private Location _lastLocation;
     private Timer _timer;
     private TimerTask _timerTask;
@@ -50,8 +51,9 @@ public class LocationManager extends Service implements LocationListener {
         _listener = listener;
     }
 
-    public void start(int stressLevel) {
+    public void start(int stressLevel, int rri) {
         _stressLevel = stressLevel;
+        _rri = rri;
         _lastLocation = null;
         startTimer();
         if (ContextCompat.checkSelfPermission(_context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -87,10 +89,10 @@ public class LocationManager extends Service implements LocationListener {
                                     bestLocation = l;
                                 }
                             }
-                            _listener.onDetectLocation(_stressLevel, bestLocation);
+                            _listener.onDetectLocation(_stressLevel, _rri, bestLocation);
                         } catch (SecurityException e) {};
                     } else {
-                        _listener.onDetectLocation(_stressLevel, _lastLocation);
+                        _listener.onDetectLocation(_stressLevel, _rri, _lastLocation);
                     }
                 }
             }
@@ -112,7 +114,7 @@ public class LocationManager extends Service implements LocationListener {
             _lastLocation = location;
             stop();
             if (_listener != null) {
-                _listener.onDetectLocation(_stressLevel, _lastLocation);
+                _listener.onDetectLocation(_stressLevel, _rri, _lastLocation);
             }
         } else {
             if (_lastLocation == null)
@@ -143,6 +145,6 @@ public class LocationManager extends Service implements LocationListener {
     }
 
     public interface OnLocationManagerListener {
-        void onDetectLocation(int stressLevel, Location location);
+        void onDetectLocation(int stressLevel, int rri, Location location);
     }
 }

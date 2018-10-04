@@ -73,6 +73,7 @@ public class StressHomeFragment extends BaseResourceFragment {
     private User _patient;
     private User _coach;
     private float _stressLevel;
+    private int _rri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,8 +150,9 @@ public class StressHomeFragment extends BaseResourceFragment {
         stressScaleView.setStress((int)stressLevel);
     }
 
-    public void onStress(float stressLevel) {
+    public void onStress(float stressLevel, int rri) {
         _stressLevel = stressLevel;
+        _rri = rri;
         stressPopupView.setVisibility(View.VISIBLE);
     }
 
@@ -181,7 +183,7 @@ public class StressHomeFragment extends BaseResourceFragment {
     }
 
     public void sendStress() {
-        LocationManager.getInstance(getActivity().getApplicationContext()).start((int)_stressLevel);
+        LocationManager.getInstance(getActivity().getApplicationContext()).start((int)_stressLevel, _rri);
     }
 
     public void sendValidateByUserMessage() {

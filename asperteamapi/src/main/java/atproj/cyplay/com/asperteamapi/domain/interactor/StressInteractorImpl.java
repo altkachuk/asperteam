@@ -31,10 +31,10 @@ public class StressInteractorImpl implements StressInteractor {
         _asperTeamApi = asperTeamApi;
     }
 
-    public void addRmssd(String userId, int level, final ResourceRequestCallback<Stress> callback) {
+    public void addRmssd(String userId, int level, int rri, final ResourceRequestCallback<Stress> callback) {
         final ResourceRequestCallback<Stress> addStressCallback = callback;
 
-        Stress stress = new Stress(userId, level);
+        Stress stress = new Stress(userId, level, rri);
 
         try {
             Call<Stress> addStressCall = _asperTeamApi.addStress(stress);
@@ -60,10 +60,10 @@ public class StressInteractorImpl implements StressInteractor {
         }
     }
 
-    public void addStress(String userId, int level, double lat, double lng, final ResourceRequestCallback<Stress> callback) {
+    public void addStress(String userId, int level, int rri, double lat, double lng, final ResourceRequestCallback<Stress> callback) {
         final ResourceRequestCallback<Stress> addStressCallback = callback;
 
-        Stress stress = new Stress(userId, level, lat, lng);
+        Stress stress = new Stress(userId, level, rri, lat, lng);
 
         try {
             Call<Stress> addStressCall = _asperTeamApi.addStress(stress);

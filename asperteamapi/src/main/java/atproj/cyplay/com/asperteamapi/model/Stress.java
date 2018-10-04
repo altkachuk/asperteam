@@ -8,27 +8,29 @@ public class Stress {
 
     String id;
     Integer level;
+    Integer rri;
     String date_time;
     Double lat;
     Double lng;
     String user;
 
-    public Stress(String user, Integer level, Double lat, Double lng) {
+    public Stress(String user, Integer level, Integer rri, Double lat, Double lng) {
         this.user = user;
         this.level = level;
         this.lat = lat;
         this.lng = lng;
     }
 
-    public Stress(String user, Integer level, String dateTime) {
+    public Stress(String user, Integer level, Integer rri, String dateTime) {
         this.user = user;
         this.level = level;
         this.date_time = dateTime;
     }
 
-    public Stress(String user, Integer level) {
+    public Stress(String user, Integer level, Integer rri) {
         this.user = user;
         this.level = level;
+        this.rri = rri;
     }
 
     public String getId() {

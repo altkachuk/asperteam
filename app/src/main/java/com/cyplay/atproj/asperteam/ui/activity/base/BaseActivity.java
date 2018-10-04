@@ -207,7 +207,7 @@ public class BaseActivity extends AppCompatActivity {
             _activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    addStress(userSettings.getId(), (int)stressLevel, 0.0f, 0.0f);
+                    addStress(userSettings.getId(), (int)stressLevel, rri, 0.0f, 0.0f);
                     _activity.onNewStressLevel(stressLevel);
                 }
             });
@@ -218,7 +218,7 @@ public class BaseActivity extends AppCompatActivity {
             _activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    _activity.onStress(stressLevel);
+                    _activity.onStress(stressLevel, rri);
                 }
             });
         }
@@ -248,7 +248,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    protected void onStress(float stressLevel) {
+    protected void onStress(float stressLevel, int rri) {
         ;
     }
 
@@ -268,14 +268,14 @@ public class BaseActivity extends AppCompatActivity {
 
     private LocationManager.OnLocationManagerListener onLocationManagerListener = new LocationManager.OnLocationManagerListener() {
         @Override
-        public void onDetectLocation(int stressLevel, Location location) {
+        public void onDetectLocation(int stressLevel, int rri, Location location) {
             if (userSettings.isGeolocationSending())
-                addStress(userSettings.getId(), stressLevel, location.getLatitude(), location.getLongitude());
+                addStress(userSettings.getId(), stressLevel, rri, location.getLatitude(), location.getLongitude());
         }
     };
 
-    private void addStress(String userId, int level, double lat, double lng) {
-        stressInteractor.addStress(userId, level, lat, lng, new ResourceRequestCallback<Stress>() {
+    private void addStress(String userId, int level, int rri, double lat, double lng) {
+        stressInteractor.addStress(userId, level, rri, lat, lng, new ResourceRequestCallback<Stress>() {
             @Override
             public void onSucess(Stress stress) {
 

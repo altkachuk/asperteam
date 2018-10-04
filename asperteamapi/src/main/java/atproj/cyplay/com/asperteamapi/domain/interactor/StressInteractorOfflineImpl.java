@@ -32,10 +32,10 @@ public class StressInteractorOfflineImpl implements StressInteractor {
         _asperTeamApi = asperTeamApi;
     }
 
-    public void addRmssd(String userId, int level, final ResourceRequestCallback<Stress> callback) {
+    public void addRmssd(String userId, int level, int rri, final ResourceRequestCallback<Stress> callback) {
         final ResourceRequestCallback<Stress> addStressCallback = callback;
 
-        Stress stress = new Stress(userId, level);
+        Stress stress = new Stress(userId, level, rri);
 
         try {
             Call<Stress> addStressCall = _asperTeamApi.addStress(stress);
@@ -61,10 +61,10 @@ public class StressInteractorOfflineImpl implements StressInteractor {
         }
     }
 
-    public void addStress(String userId, int level, double lat, double lng, final ResourceRequestCallback<Stress> callback) {
+    public void addStress(String userId, int level, int rri, double lat, double lng, final ResourceRequestCallback<Stress> callback) {
         final ResourceRequestCallback<Stress> addStressCallback = callback;
 
-        Stress stress = new Stress(userId, level, lat, lng);
+        Stress stress = new Stress(userId, level, rri, lat, lng);
 
         try {
             Call<Stress> addStressCall = _asperTeamApi.addStress(stress);
@@ -95,9 +95,9 @@ public class StressInteractorOfflineImpl implements StressInteractor {
         final ResourceRequestCallback<List<Stress>> fCallback = callback;
 
         final List<Stress> stresses = new ArrayList<>();
-        stresses.add(new Stress(userId, 300, 48.858798, 2.297023));
-        stresses.add(new Stress(userId, 300, 48.857951, 2.295381));
-        stresses.add(new Stress(userId, 300, 48.855643, 2.295917));
+        stresses.add(new Stress(userId, 300, 20, 48.858798, 2.297023));
+        stresses.add(new Stress(userId, 300, 20, 48.857951, 2.295381));
+        stresses.add(new Stress(userId, 300, 20, 48.855643, 2.295917));
 
 
         new Handler().postDelayed(new Runnable() {
@@ -112,9 +112,9 @@ public class StressInteractorOfflineImpl implements StressInteractor {
         final ResourceRequestCallback<List<Stress>> fCallback = callback;
 
         final List<Stress> stresses = new ArrayList<>();
-        stresses.add(new Stress(userId, 300, 48.858798, 2.297023));
-        stresses.add(new Stress(userId, 300, 48.857951, 2.295381));
-        stresses.add(new Stress(userId, 300, 48.855643, 2.295917));
+        stresses.add(new Stress(userId, 300, 20, 48.858798, 2.297023));
+        stresses.add(new Stress(userId, 300, 20, 48.857951, 2.295381));
+        stresses.add(new Stress(userId, 300, 20, 48.855643, 2.295917));
 
 
         new Handler().postDelayed(new Runnable() {

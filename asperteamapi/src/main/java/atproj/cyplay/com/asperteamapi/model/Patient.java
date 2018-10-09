@@ -52,10 +52,14 @@ public class Patient {
     }
 
     public int getStressLevelMin() {
+        if (stress_level_min == null)
+            stress_level_min = 0;
         return stress_level_min;
     }
 
     public int getStressLevelMax() {
+        if (stress_level_max == null)
+            stress_level_max = 100;
         return stress_level_max;
     }
 

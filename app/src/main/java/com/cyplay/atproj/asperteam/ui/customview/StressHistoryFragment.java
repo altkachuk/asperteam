@@ -69,6 +69,7 @@ public class StressHistoryFragment extends SupportMapFragment implements OnMapRe
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
+        this.googleMap.setMaxZoomPreference(15.0f);
         _created = true;
         if (_startTime != null && _endTime != null)
             getStresses(userSettings.getId(), _startTime, _endTime);

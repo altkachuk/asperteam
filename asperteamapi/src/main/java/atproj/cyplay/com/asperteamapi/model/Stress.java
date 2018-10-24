@@ -19,12 +19,14 @@ public class Stress {
         this.level = level;
         this.lat = lat;
         this.lng = lng;
+        this.rri = rri;
     }
 
     public Stress(String user, Integer level, Integer rri, String dateTime) {
         this.user = user;
         this.level = level;
         this.date_time = dateTime;
+        this.rri = rri;
     }
 
     public Stress(String user, Integer level, Integer rri) {

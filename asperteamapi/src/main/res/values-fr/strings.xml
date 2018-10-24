@@ -97,7 +97,7 @@
     <string name="stress_popup_description">Je vis actuellement une situation de stress</string>
     <string name="activity_problem_categories">Je prends conscience de ma situation</string>
     <string name="activity_situations">S’inscrire à l’application</string>
-    <string name="activity_relax">Je cherche à me détendre</string>
+    <string name="activity_relax">Je me détends</string>
     <string name="activity_add_situation">Ajouter une situation</string>
     <string name="new_situation_title">Ajouter une situation</string>
     <string name="band_connection_title">Connexion</string>
@@ -116,7 +116,7 @@
     <string name="edit_photo">Importer une nouvelle photo</string>
     <string name="last_name">Nom de famille</string>
     <string name="activity_help">Mes ressources</string>
-    <string name="trying_to_relax">Je cherche à me detendre</string>
+    <string name="trying_to_relax">Je me detendre</string>
     <string name="aware_of_situation">Je prends conscience de ma situation</string>
     <string name="contact_my_coach">Je contacte mon coach</string>
     <string name="my_coach">Mon Coach</string>
@@ -170,8 +170,8 @@
     <string name="my_data">Mes\ndonnées</string>
     <string name="of_well_being_month">de bien-être du mois</string>
     <string name="activity_dashboard">TABLEAU DE BORD</string>
-    <string name="activity_day_history">Mes Indicateurs</string>
-    <string name="activity_week_history">Histoire de la semaine</string>
+    <string name="activity_day_history">Mes Indicateurs aujourd’hui</string>
+    <string name="activity_week_history">Historique de la semaine</string>
     <string name="activity_month_history">Mon Historique</string>
     <string name="activity_patient_profile">Profil du utilisateur</string>
     <string name="activity_statistics">Mes données</string>

@@ -72,7 +72,7 @@ public class StressHomeFragment extends BaseResourceFragment {
     private String _coachFirebaseToken;
     private User _patient;
     private User _coach;
-    private float _stressLevel;
+    private int _stressLevel;
     private int _rri;
 
     @Override
@@ -146,11 +146,11 @@ public class StressHomeFragment extends BaseResourceFragment {
         });
     }
 
-    public void onNewStressLevel(final float stressLevel) {
-        stressScaleView.setStress((int)stressLevel);
+    public void onNewStressLevel(final int stressLevel) {
+        stressScaleView.setStress(stressLevel);
     }
 
-    public void onStress(float stressLevel, int rri) {
+    public void onStress(int stressLevel, int rri) {
         _stressLevel = stressLevel;
         _rri = rri;
         stressPopupView.setVisibility(View.VISIBLE);

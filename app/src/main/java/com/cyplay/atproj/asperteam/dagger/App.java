@@ -131,7 +131,8 @@ public class App extends Application {
         bandComponent = DaggerBandComponent.builder()
                 .applicationComponent(applicationComponent)
                 .userSettingsComponent(userSettingsComponent)
-                .bandModule(new BandModule())
+                .interactorComponent(interactorComponent)
+                .bandModule(new BandModule(this))
                 .build();
 
         crossknowledgeComponent = DaggerCrossknowledgeComponent.builder()

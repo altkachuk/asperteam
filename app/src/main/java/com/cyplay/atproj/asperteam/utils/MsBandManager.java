@@ -2,29 +2,30 @@ package com.cyplay.atproj.asperteam.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Handler;
 
 import com.cyplay.atproj.asperteam.R;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.HomeActivity;
-import com.cyplay.atproj.asperteam.ui.activity.base.BaseActivity;
 import com.microsoft.band.UserConsent;
 import com.microsoft.band.sensors.HeartRateConsentListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import atproj.cyplay.com.asperteamapi.domain.interactor.StressInteractor;
+import atproj.cyplay.com.asperteamapi.domain.interactor.callback.ResourceRequestCallback;
+import atproj.cyplay.com.asperteamapi.model.Stress;
+import atproj.cyplay.com.asperteamapi.model.exception.BaseException;
 import goosante.neogia.xyz.stresslibrary.model.AsperteamRmssdStressLevelCalculator;
 import goosante.neogia.xyz.stresslibrary.model.AsperteamStressListener;
 import goosante.neogia.xyz.stresslibrary.model.Band;
 import goosante.neogia.xyz.stresslibrary.model.MsBand;
-import goosante.neogia.xyz.stresslibrary.model.StressListener;
 
 /**
  * Created by andre on 24-Apr-18.
@@ -34,18 +35,19 @@ public class MsBandManager implements AsperteamStressListener {
 
     private final static int time_delay = 5 * 60 * 1000; // 5 minutes
 
-    private static MsBandManager INSTANCE = new MsBandManager();
-    private static Context _context;
+    private Context _context;
 
-    private float _levelMax;
     private boolean _bandUseAgree;
+    private StressInteractor _stressInteractor;
+    private String _id;
+    private boolean _isGeolocationSending;
 
     private AsperteamRmssdStressLevelCalculator _calculator;
     private boolean _created = false;
     private boolean _active = false;
     private boolean _calibrated = false;
 
-    private float _lastStressLevel;
+    private int _lastAppStressLevel;
     private float _lastRmssd;
     private int _lastRri;
 
@@ -53,22 +55,37 @@ public class MsBandManager implements AsperteamStressListener {
 
     private boolean _needStressNotified = false;
 
+    private LocationManager _locationManager;
+
     private MsBandManagerListener _listener;
 
-    private MsBandManager() {
-        _calculator = AsperteamRmssdStressLevelCalculator.getInstance(_context);
+    public MsBandManager(Context context) {
+        _context = context;
+
+        _calculator = new AsperteamRmssdStressLevelCalculator();
         _calculator.addStressListener(this);
+
+        _locationManager = LocationManager.getInstance(_context);
+        _locationManager.setListener(onLocationManagerListener);
+
         _created = true;
     }
 
-    public static MsBandManager getInstance(Context context) {
-        _context = context;
-        return INSTANCE;
+    public void setStressInteractor(StressInteractor stressInteractor) {
+        _stressInteractor = stressInteractor;
+    }
+
+    public void setId(String id) {
+        _id = id;
+    }
+
+    public void setGeolocationSending(Boolean value) {
+        _isGeolocationSending = value;
     }
 
     public void setLevelMax(float value) {
-        _levelMax = value / 100f;
-        _calculator.setMaxStressLevel(_levelMax);
+        float levelMax = value / 100f;
+        _calculator.setMaxStressLevel(levelMax);
     }
 
     public void setBandUseAgree(boolean value) {
@@ -197,13 +214,14 @@ public class MsBandManager implements AsperteamStressListener {
     @Override
     public void onStress(float stressLevel, float rmssd, int rri) {
         if (!_isDelayed) {
+            int appLevel = (int)(stressLevel*100.0f);
             if (isAppOnForeground(_context)) {
                 if (_listener != null)
-                    _listener.onStress(stressLevel*100, rmssd, rri);
+                    _listener.onStress(appLevel, rmssd, rri);
                 startDelayTimer();
             } else {
                 _needStressNotified = true;
-                _lastStressLevel = stressLevel;
+                _lastAppStressLevel = appLevel;
                 _lastRmssd = rmssd;
                 _lastRri = rri;
                 NotificationUtil.sendNotification(_context, R.string.notification_title, R.string.notification_stress, HomeActivity.class);
@@ -213,12 +231,17 @@ public class MsBandManager implements AsperteamStressListener {
 
     @Override
     public void onNewStressLevel(float stressLevel, float rmssd, int rri) {
+        int appLevel = (int)(stressLevel*100.0f);
+        if (_stressInteractor != null) {
+            addStress(_id, appLevel, rri, 0.0f, 0.0f);
+        }
+
         if (isAppOnForeground(_context)) {
             if (_listener != null)
-                _listener.onNewStressLevel(stressLevel*100, rmssd, rri);
+                _listener.onNewStressLevel(appLevel, rmssd, rri);
             if (_needStressNotified) {
                 if (_listener != null)
-                    _listener.onStress(_lastStressLevel*100, _lastRmssd, _lastRri);
+                    _listener.onStress(_lastAppStressLevel, _lastRmssd, _lastRri);
                 _needStressNotified = false;
                 startDelayTimer();
             }
@@ -250,10 +273,34 @@ public class MsBandManager implements AsperteamStressListener {
         return false;
     }
 
+    private LocationManager.OnLocationManagerListener onLocationManagerListener = new LocationManager.OnLocationManagerListener() {
+        @Override
+        public void onDetectLocation(int stressLevel, int rri, Location location) {
+            if (_isGeolocationSending)
+                addStress(_id, stressLevel, rri, location.getLatitude(), location.getLongitude());
+        }
+    };
+
+
+
+    private void addStress(String userId, int level, int rri, double lat, double lng) {
+        _stressInteractor.addStress(userId, level, rri, lat, lng, new ResourceRequestCallback<Stress>() {
+            @Override
+            public void onSucess(Stress stress) {
+
+            }
+
+            @Override
+            public void onError(BaseException e) {
+
+            }
+        });
+    }
+
     public interface MsBandManagerListener {
         void onCalibrated();
-        void onNewStressLevel(float stressLevel, float rmssd, int rri);
-        void onStress(float stressLevel, float rmssd, int rri);
+        void onNewStressLevel(int stressLevel, float rmssd, int rri);
+        void onStress(int stressLevel, float rmssd, int rri);
         void onAppNotInstalled();
         void onPermissionDenied();
     }

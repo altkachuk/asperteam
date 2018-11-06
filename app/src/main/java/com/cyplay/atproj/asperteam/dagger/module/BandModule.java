@@ -3,6 +3,8 @@ package com.cyplay.atproj.asperteam.dagger.module;
 import android.content.Context;
 
 import com.cyplay.atproj.asperteam.utils.MsBandManager;
+
+import atproj.cyplay.com.asperteamapi.domain.interactor.StressInteractor;
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 
 import dagger.Module;
@@ -15,11 +17,18 @@ import dagger.Provides;
 @Module
 public class BandModule {
 
+    private final MsBandManager _msBandManager;
+
+    public BandModule(Context context) {
+        _msBandManager = new MsBandManager(context);
+    }
+
     @Provides
-    MsBandManager provideMsBandManager(Context context, UserSettingsUtil userSettings) {
-        MsBandManager msBandManager = MsBandManager.getInstance(context);
-        msBandManager.setLevelMax(userSettings.getStressLevelMax());
-        msBandManager.setBandUseAgree(userSettings.isBandUseAgree());
-        return msBandManager;
+    MsBandManager provideMsBandManager(UserSettingsUtil userSettings, StressInteractor stressInteractor) {
+        _msBandManager.setStressInteractor(stressInteractor);
+        _msBandManager.setId(userSettings.getId());
+        _msBandManager.setLevelMax(userSettings.getStressLevelMax());
+        _msBandManager.setBandUseAgree(userSettings.isBandUseAgree());
+        return _msBandManager;
     }
 }

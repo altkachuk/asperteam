@@ -13,18 +13,12 @@ import android.view.WindowManager;
 
 import com.cyplay.atproj.asperteam.R;
 import com.cyplay.atproj.asperteam.dagger.App;
-import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.fragment.BottomMenuFragment;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BasePopupFragment;
-import com.cyplay.atproj.asperteam.utils.LocationManager;
-import com.cyplay.atproj.asperteam.utils.MsBandManager;
 
 import javax.inject.Inject;
 
 import atproj.cyplay.com.asperteamapi.domain.interactor.StressInteractor;
-import atproj.cyplay.com.asperteamapi.domain.interactor.callback.ResourceRequestCallback;
-import atproj.cyplay.com.asperteamapi.model.Stress;
-import atproj.cyplay.com.asperteamapi.model.exception.BaseException;
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,9 +35,6 @@ public class BaseActivity extends AppCompatActivity {
     @Inject
     StressInteractor stressInteractor;
 
-    @Inject
-    protected MsBandManager bandManager;
-
     BasePopupFragment popupFragment;
 
     @Nullable
@@ -51,9 +42,6 @@ public class BaseActivity extends AppCompatActivity {
     protected Toolbar toolbar;
 
     private ProgressDialog _progressDialog;
-
-
-    private LocationManager _locationManager;
 
     BottomMenuFragment bottomMenuFragment;
 
@@ -65,9 +53,6 @@ public class BaseActivity extends AppCompatActivity {
         _activity = this;
 
         injectDependencies();
-
-        _locationManager = LocationManager.getInstance(getApplicationContext());
-        _locationManager.setListener(onLocationManagerListener);
     }
 
     @Override
@@ -80,7 +65,6 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         initPopup();
-        bandManager.setListener(bandManagerListener);
     }
 
     @Override
@@ -191,71 +175,6 @@ public class BaseActivity extends AppCompatActivity {
         ;
     }
 
-    private MsBandManager.MsBandManagerListener bandManagerListener = new MsBandManager.MsBandManagerListener() {
-        @Override
-        public void onCalibrated() {
-            _activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ;
-                }
-            });
-        }
-
-        @Override
-        public void onNewStressLevel(final float stressLevel, final float rmssd, final int rri) {
-            _activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    addStress(userSettings.getId(), (int)stressLevel, rri, 0.0f, 0.0f);
-                    _activity.onNewStressLevel(stressLevel);
-                }
-            });
-        }
-
-        @Override
-        public void onStress(final float stressLevel, final float rmssd, final int rri) {
-            _activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    _activity.onStress(stressLevel, rri);
-                }
-            });
-        }
-
-        @Override
-        public void onAppNotInstalled() {
-            _activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    _activity.onAppNotInstalled();
-                }
-            });
-        }
-
-        @Override
-        public void onPermissionDenied() {
-            _activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    _activity.onPermissionDenied();
-                }
-            });
-        }
-    };
-
-    protected void onNewStressLevel(float stressLevel) {
-
-    }
-
-    protected void onStress(float stressLevel, int rri) {
-        ;
-    }
-
-    protected void onAppNotInstalled() {
-        ;
-    }
-
     protected void onPermissionDenied() {
         /*getPopup().initPopup(RequestCode.BAND_PERMISSION_DENIED_REQUEST,
                 "Permission Denied",
@@ -263,28 +182,5 @@ public class BaseActivity extends AppCompatActivity {
         getPopup().setImage(R.drawable.img_braccelet_not);
         getPopup().setPositive(getString(R.string.ok_button));
         getPopup().show();*/
-    }
-
-
-    private LocationManager.OnLocationManagerListener onLocationManagerListener = new LocationManager.OnLocationManagerListener() {
-        @Override
-        public void onDetectLocation(int stressLevel, int rri, Location location) {
-            if (userSettings.isGeolocationSending())
-                addStress(userSettings.getId(), stressLevel, rri, location.getLatitude(), location.getLongitude());
-        }
-    };
-
-    private void addStress(String userId, int level, int rri, double lat, double lng) {
-        stressInteractor.addStress(userId, level, rri, lat, lng, new ResourceRequestCallback<Stress>() {
-            @Override
-            public void onSucess(Stress stress) {
-
-            }
-
-            @Override
-            public void onError(BaseException e) {
-
-            }
-        });
     }
 }

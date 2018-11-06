@@ -1,5 +1,6 @@
 package com.cyplay.atproj.asperteam.ui.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
@@ -33,6 +34,40 @@ public class BandActivity extends BaseActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        final Activity activity = this;
+
+        bandManager.setListener(new MsBandManager.MsBandManagerListener() {
+            @Override
+            public void onCalibrated() {
+
+            }
+
+            @Override
+            public void onNewStressLevel(int stressLevel, float rmssd, int rri) {
+
+            }
+
+            @Override
+            public void onStress(int stressLevel, float rmssd, int rri) {
+
+            }
+
+            @Override
+            public void onAppNotInstalled() {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAppNotInstalledDialog();
+                    }
+                });
+            }
+
+            @Override
+            public void onPermissionDenied() {
+
+            }
+        });
 
         connectBand();
     }
@@ -76,8 +111,7 @@ public class BandActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onAppNotInstalled() {
+    private void showAppNotInstalledDialog() {
         getPopup().initPopup(RequestCode.BAND_NOT_CONNECTED_REQUEST,
                 getString(R.string.band_not_connected_title),
                 getString(R.string.band_not_connected_description));

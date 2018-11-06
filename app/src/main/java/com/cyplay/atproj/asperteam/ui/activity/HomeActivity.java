@@ -1,5 +1,6 @@
 package com.cyplay.atproj.asperteam.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,10 +22,10 @@ import javax.inject.Inject;
 public class HomeActivity extends BaseMenuActivity {
 
     @Inject
-    UserSettingsUtil userSettings;
+    MsBandManager bandManager;
 
-    //@Inject
-    //MsBandManager bandManager;
+    @Inject
+    UserSettingsUtil userSettings;
 
     StressHomeFragment stressHomeFragment;
 
@@ -39,17 +40,45 @@ public class HomeActivity extends BaseMenuActivity {
         super.onPostCreate(savedInstanceState);
         stressHomeFragment = (StressHomeFragment) getFragmentManager().findFragmentById(R.id.stressHomefragment);
 
+        final Activity activity = this;
+
+        bandManager.setListener(new MsBandManager.MsBandManagerListener() {
+            @Override
+            public void onCalibrated() {
+
+            }
+
+            @Override
+            public void onNewStressLevel(final int stressLevel, float rmssd, int rri) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stressHomeFragment.onNewStressLevel(stressLevel);
+                    }
+                });
+            }
+
+            @Override
+            public void onStress(final int stressLevel, float rmssd, final int rri) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stressHomeFragment.onStress(stressLevel, rri);
+                    }
+                });
+            }
+
+            @Override
+            public void onAppNotInstalled() {
+
+            }
+
+            @Override
+            public void onPermissionDenied() {
+
+            }
+        });
         bandManager.start(this);
-    }
-
-    @Override
-    protected void onNewStressLevel(float stressLevel) {
-        stressHomeFragment.onNewStressLevel(stressLevel);
-    }
-
-    @Override
-    protected void onStress(float stressLevel, int rri) {
-        stressHomeFragment.onStress(stressLevel, rri);
     }
 
     @Override

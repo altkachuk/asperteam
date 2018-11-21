@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.cyplay.atproj.asperteam.R;
-import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BaseFragment;
-import com.cyplay.atproj.asperteam.ui.fragment.base.BasePopupFragment;
 
 import javax.inject.Inject;
 
@@ -44,25 +42,9 @@ public class GeolocationPermissionFragment extends BaseFragment {
 
     @OnClick(R.id.geolocationButton)
     public void onClickGeolocationButton() {
-        getPopup().initPopup(RequestCode.GEOLOCATION_REQUEST,
-                getString(R.string.geolocation_permission_title),
-                getString(R.string.geolocation_permission_description));
-        getPopup().setPositive(getString(R.string.yes));
-        getPopup().setNegative(getString(R.string.no));
-        getPopup().setOnPositiveClickListener(onPositiveClickListener);
-        getPopup().show();
+        userSettings.setGeolocationSending(!userSettings.isGeolocationSending());
+        updateGeolocationButton();
     }
-
-    protected BasePopupFragment.OnPositiveClickListener onPositiveClickListener = new BasePopupFragment.OnPositiveClickListener() {
-        @Override
-        public void onClick(int requestCode) {
-            if (requestCode == RequestCode.GEOLOCATION_REQUEST) {
-                getPopup().hide();
-                userSettings.setGeolocationSending(!userSettings.isGeolocationSending());
-                updateGeolocationButton();
-            }
-        }
-    };
 
     private void updateGeolocationButton() {
         if (userSettings.isGeolocationSending())

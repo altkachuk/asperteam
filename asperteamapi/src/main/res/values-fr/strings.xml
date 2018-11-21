@@ -95,8 +95,8 @@
     <string name="stress">Stressé</string>
     <string name="the_trick_of_my_community">L\'astuce\nde ma communauté</string>
     <string name="stress_popup_description">Je vis actuellement une situation de stress</string>
-    <string name="activity_problem_categories">Je prends conscience de ma situation</string>
-    <string name="activity_situations">S’inscrire à l’application</string>
+    <string name="activity_problem_categories">Conscience de ma situation</string>
+    <string name="activity_situations">Conscience de ma situation</string>
     <string name="activity_relax">Je me détends</string>
     <string name="activity_add_situation">Ajouter une situation</string>
     <string name="new_situation_title">Ajouter une situation</string>
@@ -116,7 +116,7 @@
     <string name="edit_photo">Importer une nouvelle photo</string>
     <string name="last_name">Nom de famille</string>
     <string name="activity_help">Mes ressources</string>
-    <string name="trying_to_relax">Je me detendre</string>
+    <string name="trying_to_relax">Je me détends</string>
     <string name="aware_of_situation">Je prends conscience de ma situation</string>
     <string name="contact_my_coach">Je contacte mon coach</string>
     <string name="my_coach">Mon Coach</string>

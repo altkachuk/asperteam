@@ -26,7 +26,6 @@ import com.cyplay.atproj.asperteam.ui.customview.StressScaleView;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BaseResourceFragment;
 import com.cyplay.atproj.asperteam.utils.LocationManager;
 import com.cyplay.atproj.asperteam.utils.MailgunSender;
-import com.cyplay.atproj.asperteam.utils.MsBandManager;
 import com.cyplay.atproj.asperteam.utils.NotificationSender;
 
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
@@ -41,9 +40,6 @@ import butterknife.OnClick;
  */
 
 public class StressHomeFragment extends BaseResourceFragment {
-
-    @Inject
-    MsBandManager bandManager;
 
     @Inject
     UserSettingsUtil userSettings;

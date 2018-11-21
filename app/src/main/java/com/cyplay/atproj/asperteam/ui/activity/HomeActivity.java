@@ -8,9 +8,13 @@ import android.support.annotation.Nullable;
 
 import com.cyplay.atproj.asperteam.R;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
+import com.cyplay.atproj.asperteam.ui.activity.base.BaseBandMenuActivity;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseMenuActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.StressHomeFragment;
+import com.cyplay.atproj.asperteam.utils.BandManager;
 import com.cyplay.atproj.asperteam.utils.MsBandManager;
+import com.cyplay.atproj.asperteam.utils.StressDetector;
+
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 
 import javax.inject.Inject;
@@ -19,10 +23,7 @@ import javax.inject.Inject;
  * Created by andre on 30-Mar-18.
  */
 
-public class HomeActivity extends BaseMenuActivity {
-
-    @Inject
-    MsBandManager bandManager;
+public class HomeActivity extends BaseBandMenuActivity {
 
     @Inject
     UserSettingsUtil userSettings;
@@ -42,52 +43,29 @@ public class HomeActivity extends BaseMenuActivity {
 
         final Activity activity = this;
 
-        bandManager.setListener(new MsBandManager.MsBandManagerListener() {
+        bandManager.setListener(new BandManager.BandManagerListener() {
             @Override
-            public void onCalibrated() {
-
-            }
-
-            @Override
-            public void onNewStressLevel(final int stressLevel, float rmssd, int rri) {
+            public void onNewStressLevel(StressDetector.StressEvent event) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        int stressLevel = (int) (event.stressLevel * 100.0f);
                         stressHomeFragment.onNewStressLevel(stressLevel);
                     }
                 });
             }
 
             @Override
-            public void onStress(final int stressLevel, float rmssd, final int rri) {
+            public void onStress(StressDetector.StressEvent event) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        stressHomeFragment.onStress(stressLevel, rri);
+                        int stressLevel = (int) (event.stressLevel * 100.0f);
+                        stressHomeFragment.onStress(stressLevel, event.rri);
                     }
                 });
             }
-
-            @Override
-            public void onAppNotInstalled() {
-
-            }
-
-            @Override
-            public void onPermissionDenied() {
-
-            }
         });
-        bandManager.start(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RequestCode.REQUEST_ENABLE_BT) {
-            bandManager.start(this);
-        }
     }
 
     @Override

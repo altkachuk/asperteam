@@ -3,6 +3,9 @@ package com.cyplay.atproj.asperteam.ui.activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +15,8 @@ import android.util.Log;
 import com.cyplay.atproj.asperteam.R;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseActivity;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
+import com.cyplay.atproj.asperteam.ui.activity.base.BaseBandActivity;
+import com.cyplay.atproj.asperteam.utils.BandManager;
 import com.cyplay.atproj.asperteam.utils.MsBandManager;
 
 import javax.inject.Inject;
@@ -20,10 +25,10 @@ import javax.inject.Inject;
  * Created by andre on 02-Apr-18.
  */
 
-public class BandActivity extends BaseActivity {
+public class BandActivity extends BaseBandActivity {
 
     @Inject
-    MsBandManager bandManager;
+    BandManager bandManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,95 +37,32 @@ public class BandActivity extends BaseActivity {
     }
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        final Activity activity = this;
-
-        bandManager.setListener(new MsBandManager.MsBandManagerListener() {
-            @Override
-            public void onCalibrated() {
-
-            }
-
-            @Override
-            public void onNewStressLevel(int stressLevel, float rmssd, int rri) {
-
-            }
-
-            @Override
-            public void onStress(int stressLevel, float rmssd, int rri) {
-
-            }
-
-            @Override
-            public void onAppNotInstalled() {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showAppNotInstalledDialog();
-                    }
-                });
-            }
-
-            @Override
-            public void onPermissionDenied() {
-
-            }
-        });
-
-        connectBand();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void connect() {
+        super.connect();
 
-        if (requestCode == RequestCode.REQUEST_ENABLE_BT) {
-            connectBand();
-        }
-    }
+        final ProgressDialog dialog = ProgressDialog.show(
+                this,
+                getString(R.string.band_connection_title),
+                getString(R.string.band_connection_message),
+                true);
 
-    private void connectBand() {
-        if (bandManager.connect(this)) {
-            final ProgressDialog dialog = ProgressDialog.show(
-                    this,
-                    getString(R.string.band_connection_title),
-                    getString(R.string.band_connection_message),
-                    true);
-
-            (new Handler()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                    getPopup().initPopup(RequestCode.BAND_CONNECTED_REQUEST,
-                            getString(R.string.band_connected_title),
-                            getString(R.string.band_connected_description));
-                    getPopup().setImage(R.drawable.img_braccelet_ok);
-                    getPopup().setPositive(getString(R.string.ok_button));
-                    getPopup().show();
-                }
-            }, 3000);
-        } else {
-
-        }
-    }
-
-    private void showAppNotInstalledDialog() {
-        getPopup().initPopup(RequestCode.BAND_NOT_CONNECTED_REQUEST,
-                getString(R.string.band_not_connected_title),
-                getString(R.string.band_not_connected_description));
-        getPopup().setImage(R.drawable.img_braccelet_not);
-        getPopup().setPositive(getString(R.string.agree_button));
-        getPopup().setNegative(getString(R.string.disagree_button));
-        getPopup().show();
-
-        Log.d("BandPairFragment", "Microsoft Health App is not installed");
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                getPopup().initPopup(RequestCode.BAND_CONNECTED_REQUEST,
+                        getString(R.string.band_connected_title),
+                        getString(R.string.band_connected_description));
+                getPopup().setImage(R.drawable.img_braccelet_ok);
+                getPopup().setPositive(getString(R.string.ok_button));
+                getPopup().show();
+            }
+        }, 3000);
     }
 
     @Override
@@ -131,7 +73,7 @@ public class BandActivity extends BaseActivity {
                 break;
 
             case RequestCode.BAND_NOT_CONNECTED_REQUEST:
-                connectBand();
+                connect();
                 break;
         }
     }

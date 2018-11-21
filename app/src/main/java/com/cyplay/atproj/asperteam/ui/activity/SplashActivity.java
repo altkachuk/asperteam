@@ -38,15 +38,11 @@ public class SplashActivity extends BaseActivity {
     @Inject
     UserSettingsUtil userSettings;
 
-    @Inject
-    MsBandManager stressCalculator;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (userSettings.getToken() != null && userSettings.getId() != null) {
-            stressCalculator.connect(this);
             startHomeActivity();
         } else if (userSettings.getUsername() != null && userSettings.getPassword() != null) {
             doLogin(userSettings.getUsername(), userSettings.getPassword());
@@ -65,7 +61,6 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onSucess(OAuth2Credentials oAuth2Credentials) {
                 userSettings.setAuthCredentials(oAuth2Credentials);
-                stressCalculator.connect(activity);
                 startHomeActivity();
             }
 

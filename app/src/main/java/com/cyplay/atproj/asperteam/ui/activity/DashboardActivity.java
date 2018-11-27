@@ -6,6 +6,10 @@ import android.os.Bundle;
 
 import com.cyplay.atproj.asperteam.R;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseMenuActivity;
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import butterknife.OnClick;
 
@@ -28,23 +32,23 @@ public class DashboardActivity extends BaseMenuActivity {
 
     @OnClick(R.id.dayHistoryItem)
     public void onClickMyIndicatorsItem() {
-        Intent dayHistoryIntent = new Intent(getApplicationContext(), HistoryActivity.class);
-        dayHistoryIntent.putExtra("period", HistoryActivity.DAY_PERIOD);
-        this.startActivity(dayHistoryIntent);
+        HashMap<String, Integer> extra = new HashMap<>();
+        extra.put("period", HistoryActivity.DAY_PERIOD);
+        ApplicationUtil.<Integer>startActivityWithIgnoreBatterOptimization(this, HistoryActivity.class,  extra);
     }
 
     @OnClick(R.id.weekHistoryItem)
     public void onClickMyHistoryItem() {
-        Intent weekHistoryIntent = new Intent(getApplicationContext(), HistoryActivity.class);
-        weekHistoryIntent.putExtra("period", HistoryActivity.WEEK_PERIOD);
-        this.startActivity(weekHistoryIntent);
+        HashMap<String, Integer> extra = new HashMap<>();
+        extra.put("period", HistoryActivity.WEEK_PERIOD);
+        ApplicationUtil.<Integer>startActivityWithIgnoreBatterOptimization(this, HistoryActivity.class,  extra);
     }
 
     @OnClick(R.id.monthHistoryItem)
     public void onClickMyDataItem() {
-        Intent monthHistoryIntent = new Intent(getApplicationContext(), HistoryActivity.class);
-        monthHistoryIntent.putExtra("period", HistoryActivity.MONTH_PERIOD);
-        this.startActivity(monthHistoryIntent);
+        HashMap<String, Integer> extra = new HashMap<>();
+        extra.put("period", HistoryActivity.MONTH_PERIOD);
+        ApplicationUtil.<Integer>startActivityWithIgnoreBatterOptimization(this, HistoryActivity.class,  extra);
     }
 
     @OnClick(R.id.relaxItem)

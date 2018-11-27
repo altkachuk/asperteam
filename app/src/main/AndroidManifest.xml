@@ -40,6 +40,14 @@
             </intent-filter>
         </service>
 
+        <service android:name=".service.BandService"
+            android:enabled="true"/>
+
+        <receiver android:name=".service.BandRestarterBroadcastReciever"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped" />
+
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"

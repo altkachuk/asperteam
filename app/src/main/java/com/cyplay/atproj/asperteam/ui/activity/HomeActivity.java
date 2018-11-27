@@ -1,12 +1,16 @@
 package com.cyplay.atproj.asperteam.ui.activity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.cyplay.atproj.asperteam.R;
+import com.cyplay.atproj.asperteam.service.BandService;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseBandMenuActivity;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseMenuActivity;
@@ -30,10 +34,38 @@ public class HomeActivity extends BaseBandMenuActivity {
 
     StressHomeFragment stressHomeFragment;
 
+    BandService mSensorService;
+    Intent mServiceIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mSensorService = new BandService(this.getApplicationContext());
+        mServiceIntent = new Intent(this.getApplicationContext(), mSensorService.getClass());
+        if (!isMyServiceRunning(mSensorService.getClass())) {
+            startService(mServiceIntent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(mServiceIntent);
+        Log.i("MAINACT", "onDestroy!");
+        super.onDestroy();
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("isMyServiceRunning?", true+"");
+                return true;
+            }
+        }
+        Log.i ("isMyServiceRunning?", false+"");
+        return false;
     }
 
     @Override

@@ -15,7 +15,8 @@ import atproj.cyplay.com.asperteamapi.model.Login;
 import atproj.cyplay.com.asperteamapi.model.OAuth2Credentials;
 import atproj.cyplay.com.asperteamapi.model.exception.BaseException;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseActivity;
-import com.cyplay.atproj.asperteam.utils.MsBandManager;
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
+
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 
 import java.security.MessageDigest;
@@ -51,7 +52,7 @@ public class SplashActivity extends BaseActivity {
         }
 
         /*Intent intent = new Intent(this.getApplicationContext(), ProfileActivity.class);
-        this.startActivity(intent);*/
+        this.startFinishActivity(intent);*/
     }
 
     private void doLogin(String username, String password) {
@@ -72,15 +73,11 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startStartActivity() {
-        Intent startIntent = new Intent(this.getApplicationContext(), StartActivity.class);
-        this.startActivity(startIntent);
-        this.finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(this, StartActivity.class);
     }
 
     private void startHomeActivity() {
-        Intent homeIntent = new Intent(this.getApplicationContext(), HomeActivity.class);
-        this.startActivity(homeIntent);
-        this.finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(this, HomeActivity.class);
     }
 
 

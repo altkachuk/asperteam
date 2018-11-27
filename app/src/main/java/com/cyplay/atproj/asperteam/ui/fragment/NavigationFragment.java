@@ -5,6 +5,7 @@ import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ import com.cyplay.atproj.asperteam.ui.activity.base.BaseMenuActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BaseResourceFragment;
 import atproj.cyplay.com.asperteamapi.util.FacebookMessangerUtils;
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
+
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -45,6 +48,8 @@ import butterknife.OnClick;
  */
 
 public class NavigationFragment extends BaseResourceFragment {
+
+    public final String TAG = "NavigationFragment";
 
     @Inject
     ProfileInteractor profileInteractor;
@@ -127,16 +132,20 @@ public class NavigationFragment extends BaseResourceFragment {
         ImageView itemImageView = (ImageView) item.getChildAt(0);
         TextView itemTextView = (TextView) item.getChildAt(1);
 
-        if (_activeActivityClass.equals(activeClass)) {
-            itemImageView.setImageResource(activeIcRes);
-            itemTextView.setTextColor(Color.parseColor("#4e7b9f"));
-            item.setEnabled(false);
-            item.setBackgroundResource(R.drawable.background_menu_selected_item);
-        } else {
-            itemImageView.setImageResource(notActiveIcRes);
-            itemTextView.setTextColor(Color.parseColor("#5a5a5a"));
-            item.setEnabled(true);
-            item.setBackgroundResource(R.drawable.background_menu_item);
+        try {
+            if (_activeActivityClass.equals(activeClass)) {
+                itemImageView.setImageResource(activeIcRes);
+                itemTextView.setTextColor(Color.parseColor("#4e7b9f"));
+                item.setEnabled(false);
+                item.setBackgroundResource(R.drawable.background_menu_selected_item);
+            } else {
+                itemImageView.setImageResource(notActiveIcRes);
+                itemTextView.setTextColor(Color.parseColor("#5a5a5a"));
+                item.setEnabled(true);
+                item.setBackgroundResource(R.drawable.background_menu_item);
+            }
+        } catch (NullPointerException e) {
+            Log.d(TAG, e.getMessage());
         }
     }
 
@@ -151,9 +160,7 @@ public class NavigationFragment extends BaseResourceFragment {
 
     @OnClick(R.id.homeItem)
     public void onClickHomeItem() {
-        Intent homeIntent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
-        this.startActivity(homeIntent);
-        getActivity().finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(getActivity(), HomeActivity.class);
     }
 
     @OnClick(R.id.ecosysteItem)

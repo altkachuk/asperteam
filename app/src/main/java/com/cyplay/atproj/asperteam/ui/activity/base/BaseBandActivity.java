@@ -80,16 +80,25 @@ public class BaseBandActivity extends BaseActivity {
             (new Handler()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    MsBand msBand = (MsBand) Band.getSelectedBand();
-                    if (msBand.getSensorManager().getCurrentHeartRateConsent() != UserConsent.GRANTED) {
-                        msBand.getSensorManager().requestHeartRateConsent(activity, new HeartRateConsentListener() {
+                    try {
+                        MsBand msBand = (MsBand) Band.getSelectedBand();
+                        if (msBand.getSensorManager().getCurrentHeartRateConsent() != UserConsent.GRANTED) {
+                            msBand.getSensorManager().requestHeartRateConsent(activity, new HeartRateConsentListener() {
+                                @Override
+                                public void userAccepted(boolean b) {
+                                    bandManager.start();
+                                }
+                            });
+                        } else {
+                            bandManager.start();
+                        }
+                    } catch (Exception e) {
+                        (new Handler()).postDelayed(new Runnable() {
                             @Override
-                            public void userAccepted(boolean b) {
-                                bandManager.start();
+                            public void run() {
+                                connectBand(activity);
                             }
-                        });
-                    } else {
-                        bandManager.start();
+                        }, 250);
                     }
                 }
             }, 250);

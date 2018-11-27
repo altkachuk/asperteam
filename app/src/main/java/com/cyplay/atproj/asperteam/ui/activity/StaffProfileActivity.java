@@ -21,6 +21,8 @@ import atproj.cyplay.com.asperteamapi.picasso.CircleTransform;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseResourceActivity;
 import atproj.cyplay.com.asperteamapi.util.StringHelper;
+
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -165,8 +167,6 @@ public class StaffProfileActivity extends BaseResourceActivity {
 
     @Override
     protected void backToAndUpdate() {
-        Intent profileIntent = new Intent(this, ProfileActivity.class);
-        setResult(Activity.RESULT_OK, profileIntent);
-        finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(this, ProfileActivity.class);
     }
 }

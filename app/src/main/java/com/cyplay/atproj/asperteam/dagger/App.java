@@ -56,14 +56,14 @@ import java.lang.reflect.Method;
 public class App extends Application {
 
     ApplicationComponent applicationComponent;
-    UserSettingsComponent userSettingsComponent;
+    public UserSettingsComponent userSettingsComponent;
     OkHttpClientComponent okHttpClientComponent;
     AdminOkHttpClientComponent adminOkHttpClientComponent;
     FacebookComponent facebookComponent;
     PicassoComponent picassoComponent;
     NetComponent netComponent;
     AdminNetComponent adminNetComponent;
-    InteractorComponent interactorComponent;
+    public InteractorComponent interactorComponent;
     ProfileAdminInteractorComponent profileAdminInteractorComponent;
     BandComponent bandComponent;
     CrossknowledgeComponent crossknowledgeComponent;

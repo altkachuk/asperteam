@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.cyplay.atproj.asperteam.R;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseResourceActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.AddSituationFragment;
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
 
 /**
  * Created by andre on 23-Apr-18.
@@ -29,8 +30,6 @@ public class FaqActivity extends BaseResourceActivity {
 
     @Override
     protected void onPopupPositiveClick(int requestCode) {
-        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        this.startActivity(homeIntent);
-        finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(this, HomeActivity.class);
     }
 }

@@ -15,6 +15,7 @@ import com.cyplay.atproj.asperteam.ui.activity.HelpActivity;
 import com.cyplay.atproj.asperteam.ui.activity.HomeActivity;
 import com.cyplay.atproj.asperteam.ui.activity.ProblemCategoriesActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BaseFragment;
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
 
 import javax.inject.Inject;
 
@@ -91,9 +92,7 @@ public class BottomMenuFragment extends BaseFragment {
 
     @OnClick(R.id.homeItem)
     public void onClickHomeItem() {
-        Intent homeIntent = new Intent(getActivity().getApplicationContext(), HomeActivity.class);
-        this.startActivity(homeIntent);
-        getActivity().finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(getActivity(), HomeActivity.class);
     }
 
     @OnClick(R.id.qualifySituationsItem)

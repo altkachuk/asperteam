@@ -10,6 +10,8 @@ import com.cyplay.atproj.asperteam.R;
 import atproj.cyplay.com.asperteamapi.domain.repository.AsperTeamApi;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.LoginFragment;
+import com.cyplay.atproj.asperteam.utils.ApplicationUtil;
+
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 
 import javax.inject.Inject;
@@ -124,9 +126,7 @@ public class StartActivity extends BaseActivity implements LoginFragment.OnLogin
     }
 
     private void startBandActivity() {
-        Intent bandIntent = new Intent(this.getApplicationContext(), BandActivity.class);
-        this.startActivity(bandIntent);
-        this.finish();
+        ApplicationUtil.startActivityFinishWithIgnoreBatterOptimization(this, BandActivity.class);
     }
 
     private void startProfileActivity() {

@@ -12,7 +12,7 @@ import com.cyplay.atproj.asperteam.ui.RequestCode;
  * Created by andre on 16-Apr-18.
  */
 
-public class BaseResourceActivity extends BaseActivity {
+public class BaseResourceActivity extends BaseBandActivity {
 
     protected boolean _updated = false;
 

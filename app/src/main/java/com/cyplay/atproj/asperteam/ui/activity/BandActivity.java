@@ -1,23 +1,15 @@
 package com.cyplay.atproj.asperteam.ui.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.cyplay.atproj.asperteam.R;
-import com.cyplay.atproj.asperteam.ui.activity.base.BaseActivity;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseBandActivity;
-import com.cyplay.atproj.asperteam.utils.BandManager;
-import com.cyplay.atproj.asperteam.utils.MsBandManager;
+import com.cyplay.atproj.asperteam.band.BandManager;
 
 import javax.inject.Inject;
 

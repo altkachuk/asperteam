@@ -1,12 +1,9 @@
-package com.cyplay.atproj.asperteam.utils;
+package com.cyplay.atproj.asperteam.band.detector;
 
-import android.app.Activity;
 import android.content.Context;
 
-import com.cyplay.atproj.asperteam.factories.BandDataObservableFactory;
+import com.cyplay.atproj.asperteam.band.factories.BandDataObservableFactory;
 
-import goosante.neogia.xyz.stresslibrary.model.RRIntervalData;
-import goosante.neogia.xyz.stresslibrary.model.Signal;
 import goosante.neogia.xyz.stresslibrary.toolbox.ArrayOperation;
 import io.reactivex.Observable;
 
@@ -23,16 +20,16 @@ public class StressDetector {
     private static float maxRmssd = 0.0f;
     private static long lastCanceled = System.currentTimeMillis();
 
-    public static Observable<StressEvent> create(Context context) {
-        return createRRIntervalObservable(context)
-                .map(rriData -> rriData.getRri())
+    public static Observable<StressData> create(Context context) {
+        return createRRIntervalObservable()
+                .map(rri -> rri)
                 .buffer(RRI_BUFFER_SIZE, 1)
-                .map(rris -> new StressEvent(rris.get(rris.size() - 1), ArrayOperation.rmssd(rris.toArray()), 0))
-                .map(stressEvent -> new StressEvent(stressEvent.rri, stressEvent.rmssd, calcStressLevel(stressEvent.rmssd)));
+                .map(rris -> new StressData(rris.get(rris.size() - 1), ArrayOperation.rmssd(rris.toArray()), 0))
+                .map(stressEvent -> new StressData(stressEvent.rri, stressEvent.rmssd, calcStressLevel(stressEvent.rmssd)));
     }
 
-    private static Observable<RRIntervalData> createRRIntervalObservable(Context context) {
-        return BandDataObservableFactory.<RRIntervalData>createBandDataObservable(context, Signal.RRI);
+    private static Observable<Integer> createRRIntervalObservable() {
+        return BandDataObservableFactory.createBandDataObservable();
     }
 
     private static float calcStressLevel(float rmssd) {
@@ -52,12 +49,12 @@ public class StressDetector {
         return stressLevel;
     }
 
-    public static class StressEvent {
+    public static class StressData {
         public final int rri;
         public final float rmssd;
         public final float stressLevel;
 
-        private StressEvent(int rri, float rmssd, float stressLevel) {
+        private StressData(int rri, float rmssd, float stressLevel) {
             this.rri = rri;
             this.rmssd = rmssd;
             this.stressLevel = stressLevel;
@@ -65,7 +62,7 @@ public class StressDetector {
 
         @Override
         public String toString() {
-            return "StressEvent: {" +
+            return "StressData: {" +
                     "rri: " + rri + ";" +
                     "rmssd: " + rmssd + ";" +
                     "stressLevel: " + stressLevel + ";" +

@@ -205,5 +205,8 @@
     <string name="week">WEEK</string>
     <string name="month">MONTH</string>
     <string name="search_person">Search a person</string>
+    <string name="foreground_notification_title">AsperTeam Band Service</string>
+    <string name="foreground_notification_message">AsperTeam Band Service is running. You can stop the service.</string>
+    <string name="foreground_ticker_text">Some ticker text</string>
 
 </resources>

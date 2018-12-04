@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Created by andre on 17-Apr-18.
  */
 
-public class BaseMenuActivity extends BaseActivity {
+public class BaseMenuActivity extends BaseBandActivity {
 
     @Inject
     ProfileInteractor profileInteractor;

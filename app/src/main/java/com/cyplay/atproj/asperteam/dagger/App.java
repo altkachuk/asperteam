@@ -1,7 +1,12 @@
 package com.cyplay.atproj.asperteam.dagger;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
 
 import com.cyplay.atproj.asperteam.BuildConfig;
 import atproj.cyplay.com.asperteamapi.dagger.component.AdminNetComponent;
@@ -47,6 +52,8 @@ import atproj.cyplay.com.asperteamapi.dagger.module.PicassoModule;
 import atproj.cyplay.com.asperteamapi.dagger.module.UserSttingsModule;
 import atproj.cyplay.com.asperteamapi.util.ClientUtil;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -55,15 +62,17 @@ import java.lang.reflect.Method;
 
 public class App extends Application {
 
+    public static final String CHANNEL_ID = "bandServiceChannel";
+
     ApplicationComponent applicationComponent;
-    public UserSettingsComponent userSettingsComponent;
+    UserSettingsComponent userSettingsComponent;
     OkHttpClientComponent okHttpClientComponent;
     AdminOkHttpClientComponent adminOkHttpClientComponent;
     FacebookComponent facebookComponent;
     PicassoComponent picassoComponent;
     NetComponent netComponent;
     AdminNetComponent adminNetComponent;
-    public InteractorComponent interactorComponent;
+    InteractorComponent interactorComponent;
     ProfileAdminInteractorComponent profileAdminInteractorComponent;
     BandComponent bandComponent;
     CrossknowledgeComponent crossknowledgeComponent;
@@ -73,6 +82,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initLogFile();
+
+        createNotificationChannel();
 
         ClientUtil.setClientUrl(BuildConfig.BUILD_TYPE, BuildConfig.HOST);
 
@@ -164,6 +177,72 @@ public class App extends Application {
             Method method = asperTeamComponent.getClass().getMethod("inject", object.getClass());
             method.invoke(asperTeamComponent, object);
         } catch (Exception e) {
+        }
+    }
+
+    private void initLogFile() {
+        if ( isExternalStorageWritable() ) {
+
+            File appDirectory = new File( Environment.getExternalStorageDirectory() + "/AsperTeam" );
+            File logDirectory = new File( appDirectory + "/log" );
+            File logFile = new File( logDirectory, "logcat" + System.currentTimeMillis() + ".txt" );
+
+            // create app folder
+            if ( !appDirectory.exists() ) {
+                appDirectory.mkdir();
+            }
+
+            // create log folder
+            if ( !logDirectory.exists() ) {
+                logDirectory.mkdir();
+            }
+
+            // clear the previous logcat and then write the new one to the file
+            try {
+                Process process = Runtime.getRuntime().exec("logcat -c");
+                process = Runtime.getRuntime().exec("logcat -f " + logFile);
+            } catch ( IOException e ) {
+                e.printStackTrace();
+            }
+
+        } else if ( isExternalStorageReadable() ) {
+            // only readable
+            Log.d("App", "only readable");
+        } else {
+            // not accessible
+            Log.d("App", "not accessible");
+        }
+    }
+
+    /* Checks if external storage is available for read and write */
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if ( Environment.MEDIA_MOUNTED.equals( state ) ) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    private boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if ( Environment.MEDIA_MOUNTED.equals( state ) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals( state ) ) {
+            return true;
+        }
+        return false;
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel =    new NotificationChannel(
+                    CHANNEL_ID,
+                    "Band Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(serviceChannel);
         }
     }
 

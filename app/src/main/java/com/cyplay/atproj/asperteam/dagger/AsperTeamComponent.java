@@ -11,6 +11,7 @@ import atproj.cyplay.com.asperteamapi.dagger.component.UserSettingsComponent;
 import atproj.cyplay.com.asperteamapi.dagger.scope.RuntimeScope;
 
 import com.cyplay.atproj.asperteam.dagger.component.NotificationComponent;
+import com.cyplay.atproj.asperteam.service.BandService;
 import com.cyplay.atproj.asperteam.ui.activity.AddSituationActivity;
 import com.cyplay.atproj.asperteam.ui.activity.BandActivity;
 import com.cyplay.atproj.asperteam.ui.activity.DashboardActivity;
@@ -108,5 +109,8 @@ public interface AsperTeamComponent {
     // View Holder
     void inject(ProblemCategoryViewHolder problemCategoryViewHolder);
     void inject(SituationViewHolder situationViewHolder);
+
+    // Services
+    void inject(BandService bandService);
 
 }

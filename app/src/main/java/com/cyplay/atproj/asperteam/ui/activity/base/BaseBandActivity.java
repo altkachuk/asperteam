@@ -1,33 +1,31 @@
 package com.cyplay.atproj.asperteam.ui.activity.base;
 
-import android.app.Activity;
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
+import android.os.Build;
 import android.util.Log;
 
 import com.cyplay.atproj.asperteam.R;
+import com.cyplay.atproj.asperteam.band.AtBand;
+import com.cyplay.atproj.asperteam.band.AtBandUtil;
+import com.cyplay.atproj.asperteam.service.BandService;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
-import com.cyplay.atproj.asperteam.utils.BandManager;
-import com.microsoft.band.UserConsent;
-import com.microsoft.band.sensors.HeartRateConsentListener;
+import com.cyplay.atproj.asperteam.band.BandManager;
 
 import javax.inject.Inject;
 
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
-import goosante.neogia.xyz.stresslibrary.model.Band;
-import goosante.neogia.xyz.stresslibrary.model.MsBand;
 
 /**
  * Created by andre on 20-Nov-18.
  */
 
 public class BaseBandActivity extends BaseActivity {
+
+    private final String TAG = "BaseActivity";
 
     @Inject
     public BandManager bandManager;
@@ -36,8 +34,8 @@ public class BaseBandActivity extends BaseActivity {
     UserSettingsUtil userSettings;
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+    protected void onResume() {
+        super.onResume();
 
         if (userSettings.isBandUseAgree()) {
             connect();
@@ -49,15 +47,16 @@ public class BaseBandActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RequestCode.REQUEST_ENABLE_BT) {
-            connectBand(this);
+            connect();
         }
     }
 
     protected void connect() {
-        if (!isAppInstalled("com.microsoft.kapp")) {
-            showAppNotInstalledDialog();
+        if (!AtBandUtil.isAppInstalled(getApplicationContext())) {
             return;
         }
+
+        Log.i(TAG, "connect");
 
         BluetoothManager bluetoothManager = (BluetoothManager) this.getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
@@ -67,54 +66,32 @@ public class BaseBandActivity extends BaseActivity {
             return;
         }
 
-        connectBand(this);
+        startService();
     }
 
-    protected void connectBand(final Activity activity) {
-        if (isAppInstalled("com.microsoft.kapp") && MsBand.getInstance() != null) {
-            MsBand band = MsBand.getInstance();
-            band.connect(activity);
-            Band.setSelectedBand(band);
+    private void startService() {
+        if (!isMyServiceRunning(BandService.class)) {
+            Intent bandServiceIntent = new Intent(this, BandService.class);
+            bandServiceIntent.setAction(BandService.STARTFOREGROUND_ACTION);
 
-            final Activity act = activity;
-            (new Handler()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        MsBand msBand = (MsBand) Band.getSelectedBand();
-                        if (msBand.getSensorManager().getCurrentHeartRateConsent() != UserConsent.GRANTED) {
-                            msBand.getSensorManager().requestHeartRateConsent(activity, new HeartRateConsentListener() {
-                                @Override
-                                public void userAccepted(boolean b) {
-                                    bandManager.start();
-                                }
-                            });
-                        } else {
-                            bandManager.start();
-                        }
-                    } catch (Exception e) {
-                        (new Handler()).postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                connectBand(activity);
-                            }
-                        }, 250);
-                    }
-                }
-            }, 250);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(bandServiceIntent);
+            } else {
+                startService(bandServiceIntent);
+            }
+
+            bandManager.registerListener(this);
         }
     }
 
-    protected boolean isAppInstalled(String uri) {
-        PackageManager pm = getApplicationContext().getPackageManager();
-        boolean app_installed;
-        try {
-            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
-            app_installed = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            app_installed = false;
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
         }
-        return app_installed;
+        return false;
     }
 
     protected void enableBluetooth() {

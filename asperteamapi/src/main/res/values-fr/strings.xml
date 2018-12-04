@@ -206,4 +206,8 @@
     <string name="month">MOIS</string>
     <string name="search_person">Rechercher une personne</string>
 
+    <string name="foreground_notification_title">AsperTeam Band Service</string>
+    <string name="foreground_notification_message">AsperTeam Band Service is running. You can stop the service.</string>
+    <string name="foreground_ticker_text">Some ticker text</string>
+
 </resources>

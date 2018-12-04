@@ -23,7 +23,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -45,7 +45,7 @@ android {
         asperteam {
             applicationId = "com.cyplay.atproj.asperteam"
 
-            buildConfigField 'String', 'HOST', '\"{\\"pp\\" : \\"https://api.anticipstress.eu/\\",\\"release\\": \\"\\",\\"debug\\":\\"https://api.anticipstress.eu/\\"}\"'
+            buildConfigField 'String', 'HOST', '\"{\\"pp\\" : \\"https://api.anticipstress.eu/\\",\\"release\\": \\"https://api.anticipstress.eu/\\",\\"debug\\":\\"https://api.anticipstress.eu/\\"}\"'
             dimension "default"
         }
     }
@@ -98,6 +98,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+    // Android-Job
+    implementation 'com.evernote:android-job:1.2.6'
 }
 
 apply plugin: 'com.google.gms.google-services'

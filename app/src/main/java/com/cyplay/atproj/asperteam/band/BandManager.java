@@ -114,6 +114,12 @@ public class BandManager {
         }
     }
 
+    public void registerListener() {
+        if (_band.isClientExist(_context)) {
+            _band.registerListener();
+        }
+    }
+
     public void stop() {
         _band.disconnect();
         stressDisposable.dispose();

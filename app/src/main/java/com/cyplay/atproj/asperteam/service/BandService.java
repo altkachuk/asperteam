@@ -37,8 +37,7 @@ public class BandService extends Service {
     BandManager bandManager;
 
     private BandManager.BandManagerListener _bandManagerListener;
-    private Timer _timer;
-    private long _lastUpdated = System.currentTimeMillis();
+    private TimerDelay _timerDelay;
 
     @Override
     public void onCreate() {
@@ -53,6 +52,7 @@ public class BandService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getAction().equals(STARTFOREGROUND_ACTION)) {
+            _timerDelay = new TimerDelay(60 * 1000, 45 * 1000, 3);
 
             Intent stopIntent = new Intent(this, BandService.class);
             stopIntent.setAction(STOPFOREGROUND_ACTION);
@@ -102,35 +102,111 @@ public class BandService extends Service {
 
                 @Override
                 public void onUpdate() {
-                    _lastUpdated = System.currentTimeMillis();
+                    _timerDelay.update();
                 }
             };
             bandManager.addListener(_bandManagerListener);
 
-            _timer = new Timer();
-            _timer.schedule(new TimerTask() {
+            _timerDelay.setListener(new TimerDelayListener() {
                 @Override
-                public void run() {
-                    if (System.currentTimeMillis() - _lastUpdated > 60 * 1000) {
-                        Log.i(TAG, "Long Delay");
-                    }
+                public void onDelay() {
+                    Log.i(TAG, "Delay");
+                    // try to reconnect Bluetooth
+                    bandManager.subscribe();
+                    bandManager.connect();
+                    bandManager.registerListener();
                 }
-            }, 60 * 1000, 60*1000);
+
+                @Override
+                public void onLongDelay() {
+                    Log.i(TAG, "Long Delay");
+                    stopForegroundService();
+                }
+            });
+            _timerDelay.start();
 
         } else if (intent.getAction().equals(STOPFOREGROUND_ACTION)) {
-            _timer.cancel();
-            bandManager.removeListener(_bandManagerListener);
-            bandManager.stop();
-            stopForeground(true);
-            stopSelf();
+            stopForegroundService();
         }
 
         return START_STICKY;
+    }
+
+    private void stopForegroundService() {
+        _timerDelay.stop();
+        bandManager.removeListener(_bandManagerListener);
+        bandManager.stop();
+        stopForeground(true);
+        stopSelf();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    class TimerDelay {
+
+        private Timer _timer;
+        private long _delay;
+        private long _period;
+        private int _maxDelayCnt;
+        private long _lastUpdated;
+        private int _delayCnt;
+
+        private TimerDelayListener _listener;
+
+        public TimerDelay(long delay, long period, int maxDelayCnt) {
+            _timer = new Timer();
+            _delay = delay;
+            _period = period;
+            _maxDelayCnt = maxDelayCnt;
+        }
+
+        public void setListener(TimerDelayListener listener) {
+            _listener = listener;
+        }
+
+        public void update() {
+            reset();
+        }
+
+        public void start() {
+            reset();
+            _timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (System.currentTimeMillis() - _lastUpdated > _delay) {
+                        if (_listener != null) {
+                            _listener.onDelay();
+                        }
+                        _delayCnt++;
+                        if (_delayCnt >= _maxDelayCnt) {
+                            _delayCnt = 0;
+                            if (_listener != null) {
+                                _listener.onLongDelay();
+                            }
+                        }
+                    }
+                }
+            }, _delay, _period);
+        }
+
+        public void stop() {
+            reset();
+            _timer.cancel();
+        }
+
+        private void reset() {
+            _lastUpdated = System.currentTimeMillis();
+            _delayCnt = 0;
+        }
+
+    }
+
+    interface TimerDelayListener {
+        void onDelay();
+        void onLongDelay();
     }
 }

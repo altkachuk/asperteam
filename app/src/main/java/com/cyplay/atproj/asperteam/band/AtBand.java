@@ -82,6 +82,10 @@ public class AtBand implements BandRRIntervalEventListener {
         }, 1000);
     }
 
+    public void registerListener() {
+        registerRRIListener();
+    }
+
     private void connectBand() {
         Thread thread = new Thread(new Runnable() {
             @Override

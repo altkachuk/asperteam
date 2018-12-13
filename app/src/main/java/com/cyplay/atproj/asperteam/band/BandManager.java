@@ -1,7 +1,6 @@
 package com.cyplay.atproj.asperteam.band;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -14,7 +13,6 @@ import com.cyplay.atproj.asperteam.utils.NotificationUtil;
 import com.cyplay.atproj.asperteam.band.detector.StressDetector;
 
 import java.util.HashMap;
-import java.util.List;
 
 import atproj.cyplay.com.asperteamapi.domain.interactor.StressInteractor;
 import atproj.cyplay.com.asperteamapi.domain.interactor.callback.ResourceRequestCallback;
@@ -45,16 +43,29 @@ public class BandManager {
 
     private HashMap<BandManagerListener, BandManagerListener> _listeners = new HashMap<>();
 
-    private boolean _isIdle = false;
+    private IdleManager _idleManager;
+    private WaitingManager _notificationManager;
+
+    private StressDetector.StressData _notifyData;
 
     public BandManager(Context context) {
         _context = context;
         _band = AtBand.getInstance();
         _locationManager = LocationManager.getInstance(context);
         _locationManager.setListener( (stressLevel, rri, location) ->{
-            addStress(_id, stressLevel, rri, location.getLatitude(), location.getLatitude());
+            addStress(_id, stressLevel, rri, location.getLatitude(), location.getLongitude());
         });
         stressObservable = StressDetector.create(context);
+
+        _idleManager = new IdleManager(time_delay);
+
+        _notificationManager = new WaitingManager();
+        _notificationManager.setListener(() -> {
+            for (BandManagerListener listener : _listeners.keySet()) {
+                listener.onStressDetected(_notifyData);
+            }
+            _idleManager.sleep();
+        });
     }
 
     public void init(StressInteractor stressInteractor, String id, float levelMax) {
@@ -75,6 +86,14 @@ public class BandManager {
         }
     }
 
+    public void gotoIdle() {
+        _notificationManager.start();
+    }
+
+    public void gotoActive() {
+        _notificationManager.stop();
+    }
+
     public void subscribe() {
         Log.i(TAG, "subscribe");
         if (stressDisposable == null || stressDisposable.isDisposed()) {
@@ -88,8 +107,10 @@ public class BandManager {
                     int stressLevel = (int) (stressData.stressLevel * 100.0f);
                     addStress(_id, stressLevel, stressData.rri, 0.0f, 0.0f);
 
-                    if (!_isIdle && stressData.stressLevel > _levelMax) {
-                        stressDetected(stressData);
+                    if (!_idleManager.isSleep() && stressData.stressLevel > _levelMax) {
+                        if (!_notificationManager.isWait()) {
+                            stressDetected(stressData);
+                        }
                     }
 
                     if (ApplicationUtil.isAppOnForeground(_context)) {
@@ -126,24 +147,16 @@ public class BandManager {
     }
 
     private void stressDetected(StressDetector.StressData stressData) {
-        if (ApplicationUtil.isAppOnForeground(_context)) {
+        if (ApplicationUtil.isAppOnForeground(_context) && !_notificationManager.isActive()) {
             for (BandManagerListener listener : _listeners.keySet()) {
                 listener.onStressDetected(stressData);
             }
+            _idleManager.sleep();
         } else {
+            _notifyData = stressData;
+            _notificationManager.startWait();
             NotificationUtil.sendNotification(_context, R.string.notification_title, R.string.notification_stress, HomeActivity.class);
         }
-        reset();
-    }
-
-    private void reset() {
-        _isIdle = true;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                _isIdle = false;
-            }
-        }, time_delay);
     }
 
     private void addStress(String userId, int level, int rri, double lat, double lng) {
@@ -165,4 +178,79 @@ public class BandManager {
         void onStressDetected(StressDetector.StressData stressData);
         void onUpdate();
     }
+}
+
+class IdleManager {
+    private int _timeDelay;
+    private boolean _sleeping;
+
+    public IdleManager(int timeDelay) {
+        _timeDelay = timeDelay;
+        _sleeping = false;
+    }
+
+    public boolean isSleep() {
+        return _sleeping;
+    }
+
+    public void sleep() {
+        _sleeping = true;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                _sleeping = false;
+            }
+        }, _timeDelay);
+    }
+}
+
+class WaitingManager {
+    private NotifyMode _notifyMode;
+    private boolean _waitNotify;
+
+    private OnWaitingListener _listener;
+
+    public WaitingManager() {
+        _notifyMode = NotifyMode.OFF;
+        _waitNotify = false;
+    }
+
+    public boolean isWait() {
+        return _waitNotify;
+    }
+
+    public boolean isActive() {
+        return _notifyMode == NotifyMode.ON;
+    }
+
+    public void setListener(OnWaitingListener listener) {
+        _listener = listener;
+    }
+
+    public void startWait() {
+        _waitNotify = true;
+    }
+
+    public void start() {
+        _notifyMode = NotifyMode.ON;
+    }
+
+    public void stop() {
+        _notifyMode = NotifyMode.OFF;
+        if (_waitNotify) {
+            _waitNotify = false;
+            if (_listener != null) {
+                _listener.onNotify();
+            }
+        }
+    }
+}
+
+interface OnWaitingListener {
+    void onNotify();
+}
+
+enum NotifyMode {
+    OFF,
+    ON
 }

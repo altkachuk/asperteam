@@ -30,7 +30,8 @@ public class NotificationUtil {
                 .setContentTitle(context.getString(titleRes))
                 .setContentText(context.getText(textRes))
                 .setPriority(Notification.PRIORITY_MAX)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
 
 
 

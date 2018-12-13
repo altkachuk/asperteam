@@ -50,6 +50,7 @@ public class HomeActivity extends BaseMenuActivity {
         super.onPause();
 
         bandManager.removeListener(_bandManagerListener);
+        bandManager.gotoIdle();
     }
 
     @Override
@@ -86,6 +87,7 @@ public class HomeActivity extends BaseMenuActivity {
             }
         };
         bandManager.addListener(_bandManagerListener);
+        bandManager.gotoActive();
     }
 
     @Override

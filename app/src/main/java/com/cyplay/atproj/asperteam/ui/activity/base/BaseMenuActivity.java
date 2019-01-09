@@ -124,12 +124,12 @@ public class BaseMenuActivity extends BaseBandActivity {
     protected void onPopupPositiveClick(int requestCode) {
         switch (requestCode) {
             case RequestCode.DELETE_ACCOUNT_REQUEST:
-                sendMessage(getString(R.string.situation_email), R.string.subject_delete_account, R.string.text_delete_account);
+                sendMessage(getString(R.string.situation_email), getString(R.string.coach_email), R.string.subject_delete_account, R.string.text_delete_account);
                 break;
         }
     }
 
-    private void sendMessage(String to, int subjectRes, int textRes) {
+    private void sendMessage(String to, String cc, int subjectRes, int textRes) {
         String username = _user.getFirstName() + " " + _user.getLastName();
         String from = username + " <" + _user.getEmail() + ">";
         String subject = getString(subjectRes).replace("_username_", username);

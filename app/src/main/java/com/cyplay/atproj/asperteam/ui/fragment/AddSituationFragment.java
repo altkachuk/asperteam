@@ -105,7 +105,7 @@ public class AddSituationFragment extends BaseResourceFragment {
             boolean sendEnable = situationEditText.getText().toString().length() > 0;
             if (sendEnable) {
                 showPreloader();
-                sendMessage(getString(R.string.situation_email), _subjectRes);
+                sendMessage(getString(R.string.situation_email), getString(R.string.coach_email), _subjectRes);
             }
             return true;
         }
@@ -116,16 +116,16 @@ public class AddSituationFragment extends BaseResourceFragment {
     public void onClickSendButton() {
         ActivityHelper.hideKeyboard(getActivity());
         showPreloader();
-        sendMessage(getString(R.string.situation_email), _subjectRes);
+        sendMessage(getString(R.string.situation_email), getString(R.string.coach_email), _subjectRes);
     }
 
-    private void sendMessage(String to, int subjectRes) {
+    private void sendMessage(String to, String cc, int subjectRes) {
         String username = _user.getFirstName() + " " + _user.getLastName();
         String from = username + " <" + _user.getEmail() + ">";
         String subject = getString(subjectRes).replace("_username_", username);
         String text = situationEditText.getText().toString();
 
-        mailgunSender.run(from, to, subject, text, mailgunListener);
+        mailgunSender.run(from, to, cc, subject, text, mailgunListener);
     }
 
     protected MailgunSender.OnMailgunListener mailgunListener = new MailgunSender.OnMailgunListener() {

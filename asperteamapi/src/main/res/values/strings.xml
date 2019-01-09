@@ -1,7 +1,7 @@
 <resources>
     <string name="facebook_app_id">292006718000498</string>
     <string name="fb_login_protocol_scheme">fb292006718000498</string>
-    <string name="situation_email">andreyltkachuk@gmail.com</string>
+    <string name="situation_email">stephanie.fouquet@asperteam.com</string>
     <string name="coach_email">asperteamcoach@gmail.com</string>
     <string name="community_fb_url">join/AbbUeIBtEi5t_ZMr</string>
     <string name="crossknowledge_api">82f2214edb30620594a518558cf78667</string>

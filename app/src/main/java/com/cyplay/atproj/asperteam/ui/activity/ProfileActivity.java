@@ -79,7 +79,6 @@ public class ProfileActivity extends BaseMenuResourceActivity {
     protected void onPopupNegativeClick(int requestCode) {
         switch (requestCode) {
             case ADD_FACEBOOK_ACCOUNT:
-                openMyProfileActivity();
                 break;
         }
     }
@@ -108,7 +107,6 @@ public class ProfileActivity extends BaseMenuResourceActivity {
         @Override
         public void onCancel() {
             hidePreloader();
-            openMyProfileActivity();
         }
 
         @Override
@@ -138,7 +136,6 @@ public class ProfileActivity extends BaseMenuResourceActivity {
             @Override
             public void onSucess(User user) {
                 hidePreloader();
-                openMyProfileActivity();
             }
 
             @Override

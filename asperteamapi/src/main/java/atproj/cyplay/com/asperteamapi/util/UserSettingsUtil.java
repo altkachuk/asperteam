@@ -29,7 +29,7 @@ public class UserSettingsUtil {
 
     public UserSettingsUtil(Context context) {
         _context = context;
-        _sharedPreferences = _context.getSharedPreferences("com.cyplay.atproj.sperteam", Context.MODE_PRIVATE);
+        _sharedPreferences = _context.getSharedPreferences("com.cyplay.atproj.asperteam", Context.MODE_PRIVATE);
         _editor = _sharedPreferences.edit();
     }
 

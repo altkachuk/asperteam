@@ -15,12 +15,14 @@ import com.cyplay.atproj.asperteam.service.BandService;
 import com.cyplay.atproj.asperteam.ui.activity.AddSituationActivity;
 import com.cyplay.atproj.asperteam.ui.activity.BandActivity;
 import com.cyplay.atproj.asperteam.ui.activity.DashboardActivity;
+import com.cyplay.atproj.asperteam.ui.activity.FaqActivity;
 import com.cyplay.atproj.asperteam.ui.activity.HistoryActivity;
 import com.cyplay.atproj.asperteam.ui.activity.EditMyProfileActivity;
 import com.cyplay.atproj.asperteam.ui.activity.EditStaffProfileActivity;
 import com.cyplay.atproj.asperteam.ui.activity.HelpActivity;
 import com.cyplay.atproj.asperteam.ui.activity.HomeActivity;
 import com.cyplay.atproj.asperteam.ui.activity.MyProfileActivity;
+import com.cyplay.atproj.asperteam.ui.activity.MySuggestionsActivity;
 import com.cyplay.atproj.asperteam.ui.activity.ParametersActivity;
 import com.cyplay.atproj.asperteam.ui.activity.ProblemCategoriesActivity;
 import com.cyplay.atproj.asperteam.ui.activity.ProfileActivity;
@@ -90,6 +92,8 @@ public interface AsperTeamComponent {
     void inject(ParametersActivity parametersActivity);
     void inject(TermsOfServiceActivity termsOfServiceActivity);
     void inject(HistoryActivity dayHistoryActivity);
+    void inject(MySuggestionsActivity mySuggestionsActivity);
+    void inject(FaqActivity faqActivity);
 
     // fragments
     void inject(BaseFragment baseFragment);

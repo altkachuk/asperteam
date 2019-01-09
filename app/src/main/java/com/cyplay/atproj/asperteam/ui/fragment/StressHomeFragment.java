@@ -3,6 +3,8 @@ package com.cyplay.atproj.asperteam.ui.fragment;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -70,6 +72,7 @@ public class StressHomeFragment extends BaseResourceFragment {
     private User _coach;
     private int _stressLevel;
     private int _rri;
+    private MediaPlayer _mediaPlayer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +89,8 @@ public class StressHomeFragment extends BaseResourceFragment {
         stressPopupView.setVisibility(View.GONE);
 
         getPatient(userSettings.getId());
+
+        _mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
     }
 
     private void getPatient(String id) {
@@ -150,6 +155,7 @@ public class StressHomeFragment extends BaseResourceFragment {
         _stressLevel = stressLevel;
         _rri = rri;
         stressPopupView.setVisibility(View.VISIBLE);
+        _mediaPlayer.start();
     }
 
     @OnClick(R.id.yesButton)

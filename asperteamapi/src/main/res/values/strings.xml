@@ -196,7 +196,7 @@
     <string name="daily_indicators">Daily indicators</string>
     <string name="weekly_indicators">Weekly indicators</string>
     <string name="monthly_indicators">Monthly indicators</string>
-    <string name="stress_situations">Stress situations</string>
+    <string name="stress_situations">Situations de stress</string>
     <string name="asperteam_community">Asperteam Community</string>
     <string name="more_relaxed">MORE RELAXED</string>
     <string name="stable">STABLE</string>
@@ -208,5 +208,6 @@
     <string name="foreground_notification_title">AsperTeam Band Service</string>
     <string name="foreground_notification_message">AsperTeam Band Service is running. You can stop the service.</string>
     <string name="foreground_ticker_text">Some ticker text</string>
+    <string name="activity_coach_situations">Situations de stress</string>
 
 </resources>

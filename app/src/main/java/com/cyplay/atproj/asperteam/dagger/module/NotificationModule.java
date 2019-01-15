@@ -21,11 +21,6 @@ import dagger.Provides;
 public class NotificationModule {
 
     @Provides
-    MailgunSender provideMailgunSender() {
-        return new MailgunSender();
-    }
-
-    @Provides
     NotificationSender provideNotificationSender(Application application) {
         return new NotificationSender(application.getApplicationContext().getString(R.string.server_key));
     }

@@ -14,6 +14,5 @@ import dagger.Component;
 @Component(modules = {NotificationModule.class}, dependencies = {ApplicationComponent.class})
 public interface NotificationComponent {
 
-    MailgunSender getMailgunSender();
     NotificationSender getNotificationSender();
 }

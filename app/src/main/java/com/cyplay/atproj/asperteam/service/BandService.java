@@ -51,7 +51,7 @@ public class BandService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction().equals(STARTFOREGROUND_ACTION)) {
+        if (intent != null && intent.getAction().equals(STARTFOREGROUND_ACTION)) {
             _timerDelay = new TimerDelay(60 * 1000, 45 * 1000, 3);
 
             Intent stopIntent = new Intent(this, BandService.class);
@@ -125,7 +125,7 @@ public class BandService extends Service {
             });
             _timerDelay.start();
 
-        } else if (intent.getAction().equals(STOPFOREGROUND_ACTION)) {
+        } else if (intent != null && intent.getAction().equals(STOPFOREGROUND_ACTION)) {
             stopForegroundService();
         }
 

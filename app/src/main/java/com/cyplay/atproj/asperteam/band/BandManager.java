@@ -53,7 +53,9 @@ public class BandManager {
         _band = AtBand.getInstance();
         _locationManager = LocationManager.getInstance(context);
         _locationManager.setListener( (stressLevel, rri, location) ->{
-            addStress(_id, stressLevel, rri, location.getLatitude(), location.getLongitude());
+            if (location != null) {
+                addStress(_id, stressLevel, rri, location.getLatitude(), location.getLongitude());
+            }
         });
         stressObservable = StressDetector.create(context);
 

@@ -98,9 +98,8 @@ public class HomeActivity extends BaseMenuActivity {
 
             if (permission.equals(android.Manifest.permission.ACCESS_FINE_LOCATION) && res == PackageManager.PERMISSION_GRANTED) {
                 stressHomeFragment.sendStress();
-                stressHomeFragment.sendValidateByUserMessage();
             } else if (permission.equals(android.Manifest.permission.ACCESS_FINE_LOCATION) && res != PackageManager.PERMISSION_GRANTED) {
-                stressHomeFragment.sendValidateByUserMessage();
+                //stressHomeFragment.sendValidateByUserMessage();
             }
         }
     }

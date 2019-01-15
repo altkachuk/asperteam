@@ -36,9 +36,6 @@ public class BaseMenuActivity extends BaseBandActivity {
     @Inject
     UserSettingsUtil userSettings;
 
-    @Inject
-    MailgunSender mailgunSender;
-
     // Navigation drawer:
     @Nullable
     @BindView(R.id.drawer_layout)
@@ -135,13 +132,12 @@ public class BaseMenuActivity extends BaseBandActivity {
         String subject = getString(subjectRes).replace("_username_", username);
         String text = getString(textRes).replace("_username_", username);
 
-        mailgunSender.run(from, to, subject, text, mailgunListener);
+        MailgunSender mailgunSender = new MailgunSender();
+        mailgunSender.run(from, to, subject, text, new MailgunSender.OnMailgunListener() {
+            @Override
+            public void onSend() {
+                hidePreloader();
+            }
+        });
     }
-
-    protected MailgunSender.OnMailgunListener mailgunListener = new MailgunSender.OnMailgunListener() {
-        @Override
-        public void onSend() {
-            hidePreloader();
-        }
-    };
 }

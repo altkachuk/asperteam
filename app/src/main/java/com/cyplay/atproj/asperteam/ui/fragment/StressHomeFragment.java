@@ -18,17 +18,13 @@ import com.cyplay.atproj.asperteam.R;
 import atproj.cyplay.com.asperteamapi.domain.interactor.ProfileAdminInteractor;
 import atproj.cyplay.com.asperteamapi.domain.interactor.ProfileInteractor;
 import atproj.cyplay.com.asperteamapi.domain.interactor.StressInteractor;
-import atproj.cyplay.com.asperteamapi.domain.interactor.callback.ResourceRequestCallback;
-import atproj.cyplay.com.asperteamapi.model.RoleType;
-import atproj.cyplay.com.asperteamapi.model.Stress;
-import atproj.cyplay.com.asperteamapi.model.User;
-import atproj.cyplay.com.asperteamapi.model.exception.BaseException;
+
+import com.cyplay.atproj.asperteam.presenters.StressPresenter;
 import com.cyplay.atproj.asperteam.ui.activity.ProblemCategoriesActivity;
 import com.cyplay.atproj.asperteam.ui.customview.StressScaleView;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BaseResourceFragment;
-import com.cyplay.atproj.asperteam.utils.LocationManager;
-import com.cyplay.atproj.asperteam.utils.MailgunSender;
 import com.cyplay.atproj.asperteam.utils.NotificationSender;
+import com.cyplay.atproj.asperteam.views.StressView;
 
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 
@@ -41,7 +37,7 @@ import butterknife.OnClick;
  * Created by andre on 17-Apr-18.
  */
 
-public class StressHomeFragment extends BaseResourceFragment {
+public class StressHomeFragment extends BaseResourceFragment implements StressView {
 
     @Inject
     UserSettingsUtil userSettings;
@@ -56,9 +52,6 @@ public class StressHomeFragment extends BaseResourceFragment {
     StressInteractor stressInteractor;
 
     @Inject
-    MailgunSender mailgunSender;
-
-    @Inject
     NotificationSender notificationSender;
 
     @BindView(R.id.stressScaleView)
@@ -67,11 +60,7 @@ public class StressHomeFragment extends BaseResourceFragment {
     @BindView(R.id.stressPopupView)
     RelativeLayout stressPopupView;
 
-    private String _coachFirebaseToken;
-    private User _patient;
-    private User _coach;
-    private int _stressLevel;
-    private int _rri;
+    private StressPresenter _stressPresenter;
     private MediaPlayer _mediaPlayer;
 
     @Override
@@ -85,66 +74,12 @@ public class StressHomeFragment extends BaseResourceFragment {
 
         stressScaleView.setMinimum(0);
         stressScaleView.setMaximum(100);
-
-        stressPopupView.setVisibility(View.GONE);
-
-        getPatient(userSettings.getId());
+        hidePopup();
 
         _mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-    }
 
-    private void getPatient(String id) {
-        showPreloader();
-
-        profileInteractor.getPatient(id, new ResourceRequestCallback<User>() {
-            @Override
-            public void onSucess(User user) {
-                hidePreloader();
-                _patient = user;
-                userSettings.setStressLevelMin(_patient.getPatient().getStressLevelMin());
-                userSettings.setStressLevelMax(_patient.getPatient().getStressLevelMax());
-                getCoachOrigin(user.getCoachOrigin());
-                getStaff(user.getStaffId(RoleType.COACH));
-            }
-
-            @Override
-            public void onError(BaseException e) {
-                hidePreloader();
-            }
-        });
-    }
-
-    private void getCoachOrigin(String id) {
-        showPreloader();
-
-        profileAdminInteractor.getUser(id, new ResourceRequestCallback<User>() {
-            @Override
-            public void onSucess(User user) {
-                hidePreloader();
-                _coachFirebaseToken = user.getFirebaseToken();
-            }
-
-            @Override
-            public void onError(BaseException e) {
-                hidePreloader();
-            }
-        });
-    }
-
-    private void getStaff(String id) {
-        showPreloader();
-        profileInteractor.getStaff(id, new ResourceRequestCallback<User>() {
-            @Override
-            public void onSucess(User user) {
-                hidePreloader();
-                _coach = user;
-            }
-
-            @Override
-            public void onError(BaseException e) {
-                hidePreloader();
-            }
-        });
+        _stressPresenter = new StressPresenter(getActivity().getApplicationContext(),
+                this, userSettings, profileInteractor, profileAdminInteractor, notificationSender);
     }
 
     public void onNewStressLevel(final int stressLevel) {
@@ -152,63 +87,61 @@ public class StressHomeFragment extends BaseResourceFragment {
     }
 
     public void onStress(int stressLevel, int rri) {
-        _stressLevel = stressLevel;
-        _rri = rri;
-        stressPopupView.setVisibility(View.VISIBLE);
-        _mediaPlayer.start();
+        _stressPresenter.setStress(stressLevel, rri);
     }
+
+    public void sendStress() {
+        _stressPresenter.confirmStress();
+    }
+
+    //------------------------------------------
+    // Listeners
 
     @OnClick(R.id.yesButton)
     public void onClickYesButton() {
-        stressPopupView.setVisibility(View.GONE);
-
-        if (!userSettings.isGeolocationSending()) {
-            sendValidateByUserMessage();
-        } else if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[] {
-                            android.Manifest.permission.ACCESS_FINE_LOCATION
-                    },
-                    1);
-        } else {
-            sendStress();
-            sendValidateByUserMessage();
-        }
+        _stressPresenter.confirmStress();
     }
 
     @OnClick(R.id.cancelButton)
     public void onClickCancelButton() {
+        _stressPresenter.cancel();
+    }
+
+    //------------------------------------------
+    // StressView
+
+    @Override
+    public void showPopup() {
+        stressPopupView.setVisibility(View.VISIBLE);
+        _mediaPlayer.start();
+    }
+
+    @Override
+    public void hidePopup() {
         stressPopupView.setVisibility(View.GONE);
-
-        sendMessage(R.string.subject_stress_not_validated_by_user, R.string.text_stress_not_validated_by_user);
     }
 
-    public void sendStress() {
-        LocationManager.getInstance(getActivity().getApplicationContext()).start((int)_stressLevel, _rri);
+    @Override
+    public boolean checkPermissions() {
+        return ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void sendValidateByUserMessage() {
-        sendMessage(R.string.subject_stress_validated_by_user, R.string.text_stress_validated_by_user);
-        openProblemCategoriesActivity();
+    @Override
+    public void requestPermisions() {
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[] {
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                },
+                1);
     }
 
-    private void openProblemCategoriesActivity() {
+    @Override
+    public void openProblemCategoriesActivity() {
         Intent problemCategoriesIntent = new Intent(getActivity().getApplicationContext(), ProblemCategoriesActivity.class);
         TaskStackBuilder.create(getActivity())
                 .addParentStack(ProblemCategoriesActivity.class)
                 .addNextIntent(problemCategoriesIntent)
                 .startActivities();
-    }
-
-    private void sendMessage(int subjectRes, int textRes) {
-        String username = _patient.getFirstName() + " " + _patient.getLastName();
-        String from = username + " <" + _patient.getEmail() + ">";
-        String subject = getString(subjectRes).replace("_username_", username);
-        String text = getString(textRes).replace("_username_", username);
-
-        mailgunSender.run(from, _coach.getEmail(), getString(R.string.coach_email), subject, text, null);
-        if (_coachFirebaseToken != null)
-            notificationSender.run(_patient.getId(), _coachFirebaseToken, subject, text, "PatientActivity");
     }
 }

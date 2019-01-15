@@ -27,7 +27,7 @@
 
     <string name="years">ans</string>
 
-    <string name="yes">Qui</string>
+    <string name="yes">Oui</string>
     <string name="no">Non</string>
 	
 	
@@ -209,5 +209,6 @@
     <string name="foreground_notification_title">AsperTeam Band Service</string>
     <string name="foreground_notification_message">AsperTeam Band Service is running. You can stop the service.</string>
     <string name="foreground_ticker_text">Some ticker text</string>
+    <string name="activity_coach_situations">Situations de stress</string>
 
 </resources>

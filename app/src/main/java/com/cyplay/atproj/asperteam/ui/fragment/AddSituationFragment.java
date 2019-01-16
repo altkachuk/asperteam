@@ -122,15 +122,11 @@ public class AddSituationFragment extends BaseResourceFragment {
         String subject = getString(subjectRes).replace("_username_", username);
         String text = situationEditText.getText().toString();
 
-        MailgunSender mailgunSender = new MailgunSender();
-        mailgunSender.run(from, to, cc, subject, text, new MailgunSender.OnMailgunListener() {
-            @Override
-            public void onSend() {
-                hidePreloader();
-                getPopup().initPopup(0, getString(R.string.message_sent));
-                getPopup().setPositive(getString(R.string.ok_button));
-                getPopup().show();
-            }
+        new MailgunSender().run(from, to, cc, subject, text, () -> {
+            hidePreloader();
+            getPopup().initPopup(0, getString(R.string.message_sent));
+            getPopup().setPositive(getString(R.string.ok_button));
+            getPopup().show();
         });
     }
 }

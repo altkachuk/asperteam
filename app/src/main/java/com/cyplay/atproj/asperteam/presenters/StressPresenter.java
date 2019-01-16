@@ -139,8 +139,7 @@ public class StressPresenter {
         subject = subject.replace("_username_", username);
         text = text.replace("_username_", username);
 
-        MailgunSender mailgunSender = new MailgunSender();
-        mailgunSender.run(from, _coach.getEmail(), mainCoachEmail, subject, text, null);
+        new MailgunSender().run(from, _coach.getEmail(), mainCoachEmail, subject, text, null);
         if (_coachFirebaseToken != null)
             _notificationSender.run(_patient.getId(), _coachFirebaseToken, subject, text, "PatientActivity");
     }

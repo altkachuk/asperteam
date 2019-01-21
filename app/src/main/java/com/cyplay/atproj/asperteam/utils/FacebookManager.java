@@ -33,7 +33,6 @@ public class FacebookManager {
     private CallbackManager _callbackManager;
     private LoginFacebookProperties _properties = new LoginFacebookProperties();
     private FacebookCallback<LoginResult> _loginCallback;
-    private AccessToken _accessToken;
 
     public CallbackManager getCallbackManager() {
         return _callbackManager;
@@ -68,7 +67,6 @@ public class FacebookManager {
     public FacebookManager(Gson gson) {
         _gson = gson;
         _callbackManager = CallbackManager.Factory.create();
-        _accessToken = AccessToken.getCurrentAccessToken();
     }
 
     /**
@@ -76,7 +74,7 @@ public class FacebookManager {
      * @return
      */
     public boolean loggedIn() {
-        return _accessToken != null;
+        return AccessToken.getCurrentAccessToken() != null;
     }
 
     /**
@@ -102,7 +100,8 @@ public class FacebookManager {
      *                    success or error conditions
      */
     public void meRequest(final MeRequestCallback callback) {
-        GraphRequest request = GraphRequest.newMeRequest(_accessToken,
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        GraphRequest request = GraphRequest.newMeRequest(accessToken,
                 new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
@@ -119,7 +118,6 @@ public class FacebookManager {
     protected FacebookCallback<LoginResult> loginResultFacebookCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-            _accessToken = loginResult.getAccessToken();
             _loginCallback.onSuccess(loginResult);
         }
 

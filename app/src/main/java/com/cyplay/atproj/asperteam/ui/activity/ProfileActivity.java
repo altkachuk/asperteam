@@ -2,6 +2,7 @@ package com.cyplay.atproj.asperteam.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 
 import com.cyplay.atproj.asperteam.R;
@@ -79,6 +80,7 @@ public class ProfileActivity extends BaseMenuResourceActivity {
     protected void onPopupNegativeClick(int requestCode) {
         switch (requestCode) {
             case ADD_FACEBOOK_ACCOUNT:
+                openMyProfileActivity();
                 break;
         }
     }
@@ -107,11 +109,14 @@ public class ProfileActivity extends BaseMenuResourceActivity {
         @Override
         public void onCancel() {
             hidePreloader();
+            openMyProfileActivity();
         }
 
         @Override
         public void onError(FacebookException error) {
             hidePreloader();
+            Toast.makeText(getApplicationContext(), "Facebook login problem!", Toast.LENGTH_SHORT);
+            openMyProfileActivity();
         }
     };
 
@@ -136,6 +141,7 @@ public class ProfileActivity extends BaseMenuResourceActivity {
             @Override
             public void onSucess(User user) {
                 hidePreloader();
+                openMyProfileActivity();
             }
 
             @Override

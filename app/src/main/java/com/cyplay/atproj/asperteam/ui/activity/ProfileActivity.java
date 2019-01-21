@@ -12,12 +12,12 @@ import atproj.cyplay.com.asperteamapi.model.FacebookProfile;
 import atproj.cyplay.com.asperteamapi.model.User;
 import atproj.cyplay.com.asperteamapi.model.exception.BaseException;
 
+import com.cyplay.atproj.asperteam.facebook.IFacebook;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseMenuResourceActivity;
-import com.cyplay.atproj.asperteam.ui.activity.base.BaseResourceActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.MyProfileItemFragment;
 import com.cyplay.atproj.asperteam.ui.fragment.StaffProfileItemFragment;
-import com.cyplay.atproj.asperteam.utils.FacebookManager;
+
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -41,7 +41,7 @@ public class ProfileActivity extends BaseMenuResourceActivity {
     UserSettingsUtil userSettings;
 
     @Inject
-    FacebookManager facebook;
+    IFacebook facebook;
 
     MyProfileItemFragment myProfile;
     StaffProfileItemFragment coachProfile;
@@ -96,37 +96,30 @@ public class ProfileActivity extends BaseMenuResourceActivity {
     }
 
     private void loginFB() {
-        facebook.login(this, loginResultFacebookCallback);
+        facebook.login(this, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                showPreloader();
+                facebook.getProfile((profile) -> {
+                    hidePreloader();
+                    updateMyProfileByFacebook(profile);
+                });
+            }
+
+            @Override
+            public void onCancel() {
+                hidePreloader();
+                openMyProfileActivity();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                hidePreloader();
+                Toast.makeText(getApplicationContext(), "Facebook login problem!", Toast.LENGTH_SHORT);
+                openMyProfileActivity();
+            }
+        });
     }
-
-    protected FacebookCallback<LoginResult> loginResultFacebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            showPreloader();
-            facebook.meRequest(meRequestCallback);
-        }
-
-        @Override
-        public void onCancel() {
-            hidePreloader();
-            openMyProfileActivity();
-        }
-
-        @Override
-        public void onError(FacebookException error) {
-            hidePreloader();
-            Toast.makeText(getApplicationContext(), "Facebook login problem!", Toast.LENGTH_SHORT);
-            openMyProfileActivity();
-        }
-    };
-
-    protected FacebookManager.MeRequestCallback meRequestCallback = new FacebookManager.MeRequestCallback() {
-        @Override
-        public void onCompleted(FacebookProfile profile) {
-            hidePreloader();
-            updateMyProfileByFacebook(profile);
-        }
-    };
 
     private void updateMyProfileByFacebook(FacebookProfile profile) {
         showPreloader();
@@ -153,7 +146,7 @@ public class ProfileActivity extends BaseMenuResourceActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        facebook.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+        facebook.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 

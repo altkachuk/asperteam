@@ -1,6 +1,7 @@
-package com.cyplay.atproj.asperteam.utils;
+package com.cyplay.atproj.asperteam.facebook;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import atproj.cyplay.com.asperteamapi.model.FacebookProfile;
@@ -9,7 +10,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.internal.LoginAuthorizationType;
 import com.facebook.internal.Utility;
 import com.facebook.login.DefaultAudience;
@@ -18,8 +18,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -27,7 +25,7 @@ import java.util.List;
  * Created by andre on 07-Apr-18.
  */
 
-public class FacebookManager {
+public class FacebookManager implements IFacebook {
 
     private Gson _gson;
     private CallbackManager _callbackManager;
@@ -51,6 +49,77 @@ public class FacebookManager {
         return _properties.getDefaultAudience();
     }
 
+    public FacebookManager(Gson gson) {
+        _gson = gson;
+        _callbackManager = CallbackManager.Factory.create();
+    }
+
+    //-----------------------------------------------------
+    // IFacebook
+
+    @Override
+    public boolean loggedIn() {
+        return AccessToken.getCurrentAccessToken() != null;
+    }
+
+    @Override
+    public void login(Activity activity, FacebookCallback<LoginResult> callback) {
+        _loginCallback = callback;
+
+        final LoginManager loginManager = getLoginManager();
+        loginManager.registerCallback(_callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                _loginCallback.onSuccess(loginResult);
+            }
+
+            @Override
+            public void onCancel() {
+                _loginCallback.onCancel();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                _loginCallback.onError(error);
+            }
+        });
+
+        if (LoginAuthorizationType.PUBLISH.equals(_properties.authorizationType)) {
+            loginManager.logInWithPublishPermissions(activity, _properties.permissions);
+        } else {
+            loginManager.logInWithReadPermissions(activity, _properties.permissions);
+        }
+    }
+
+    @Override
+    public void getProfile(final MeRequestCallback callback) {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        GraphRequest request = GraphRequest.newMeRequest(accessToken,
+                (object, response) -> {
+                        FacebookProfile profile = _gson.fromJson(object.toString(), FacebookProfile.class);
+                        callback.onCompleted(profile);
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,first_name,last_name,link,email,picture.type(large)");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        _callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //-----------------------------------------------------
+    // private methods
+
+    private LoginManager getLoginManager() {
+        LoginManager manager = LoginManager.getInstance();
+        manager.setDefaultAudience(getDefaultAudience());
+        manager.setLoginBehavior(getLoginBehavior());
+        return manager;
+    }
+
     /**
      * Gets the login behavior during authorization. If null is returned, the default
      * ({@link com.facebook.login.LoginBehavior LoginBehavior.NATIVE_WITH_FALLBACK}
@@ -60,84 +129,12 @@ public class FacebookManager {
      * specifies what behaviors should be attempted during
      * authorization.
      */
-    public LoginBehavior getLoginBehavior() {
+    private LoginBehavior getLoginBehavior() {
         return _properties.getLoginBehavior();
     }
 
-    public FacebookManager(Gson gson) {
-        _gson = gson;
-        _callbackManager = CallbackManager.Factory.create();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean loggedIn() {
-        return AccessToken.getCurrentAccessToken() != null;
-    }
-
-    /**
-     *
-     * @param callback
-     */
-    public void login(Activity activity, FacebookCallback<LoginResult> callback) {
-        _loginCallback = callback;
-
-        final LoginManager loginManager = getLoginManager();
-        loginManager.registerCallback(_callbackManager, loginResultFacebookCallback);
-
-        if (LoginAuthorizationType.PUBLISH.equals(_properties.authorizationType)) {
-            loginManager.logInWithPublishPermissions(activity, _properties.permissions);
-        } else {
-            loginManager.logInWithReadPermissions(activity, _properties.permissions);
-        }
-    }
-
-    /**
-     *
-     * @param callback a callback that will be called when the request is completed to handle
-     *                    success or error conditions
-     */
-    public void meRequest(final MeRequestCallback callback) {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        GraphRequest request = GraphRequest.newMeRequest(accessToken,
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        FacebookProfile profile = _gson.fromJson(object.toString(), FacebookProfile.class);
-                        callback.onCompleted(profile);
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,first_name,last_name,link,email,picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    protected FacebookCallback<LoginResult> loginResultFacebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(LoginResult loginResult) {
-            _loginCallback.onSuccess(loginResult);
-        }
-
-        @Override
-        public void onCancel() {
-            _loginCallback.onCancel();
-        }
-
-        @Override
-        public void onError(FacebookException error) {
-            _loginCallback.onError(error);
-        }
-    };
-
-    protected LoginManager getLoginManager() {
-        LoginManager manager = LoginManager.getInstance();
-        manager.setDefaultAudience(getDefaultAudience());
-        manager.setLoginBehavior(getLoginBehavior());
-        return manager;
-    }
+    //-----------------------------------------------------
+    // LoginFacebookProperties
 
     static class LoginFacebookProperties {
         private DefaultAudience defaultAudience = DefaultAudience.FRIENDS;

@@ -14,13 +14,12 @@ import atproj.cyplay.com.asperteamapi.model.User;
 
 import atproj.cyplay.com.asperteamapi.picasso.CircleTransform;
 
+import com.cyplay.atproj.asperteam.facebook.IFacebook;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.MyProfileActivity;
 import com.cyplay.atproj.asperteam.ui.activity.ProfileActivity;
-import com.cyplay.atproj.asperteam.ui.activity.base.BaseActivity;
-import com.cyplay.atproj.asperteam.ui.activity.base.BaseResourceActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.base.BaseResourceFragment;
-import com.cyplay.atproj.asperteam.utils.FacebookManager;
+import com.cyplay.atproj.asperteam.facebook.FacebookManager;
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
 import com.squareup.picasso.Picasso;
 
@@ -45,7 +44,7 @@ public class MyProfileItemFragment extends BaseResourceFragment {
     ProfileInteractor profileInteractor;
 
     @Inject
-    FacebookManager facebook;
+    IFacebook facebook;
 
     @BindView(R.id.photoImage)
     ImageView photoImage;

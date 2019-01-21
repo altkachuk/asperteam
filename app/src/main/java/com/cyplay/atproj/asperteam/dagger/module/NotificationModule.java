@@ -3,12 +3,7 @@ package com.cyplay.atproj.asperteam.dagger.module;
 import android.app.Application;
 
 import com.cyplay.atproj.asperteam.R;
-import com.cyplay.atproj.asperteam.utils.FacebookManager;
-import com.cyplay.atproj.asperteam.utils.MailgunSender;
 import com.cyplay.atproj.asperteam.utils.NotificationSender;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;

@@ -1,9 +1,9 @@
 package com.cyplay.atproj.asperteam.dagger.module;
 
 import android.app.Application;
-import android.content.Context;
 
-import com.cyplay.atproj.asperteam.utils.FacebookManager;
+import com.cyplay.atproj.asperteam.facebook.FacebookManager;
+import com.cyplay.atproj.asperteam.facebook.IFacebook;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.gson.Gson;
@@ -19,7 +19,7 @@ import dagger.Provides;
 public class FacebookModule {
 
     @Provides
-    FacebookManager provideFacebook(Application application, Gson gson) {
+    IFacebook provideFacebook(Application application, Gson gson) {
         FacebookSdk.sdkInitialize(application.getApplicationContext());
         AppEventsLogger.activateApp(application);
 

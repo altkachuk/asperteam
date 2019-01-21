@@ -15,17 +15,16 @@ import atproj.cyplay.com.asperteamapi.domain.interactor.LanguageInteractor;
 import atproj.cyplay.com.asperteamapi.domain.interactor.ProfileInteractor;
 import atproj.cyplay.com.asperteamapi.domain.interactor.callback.ResourceRequestCallback;
 import atproj.cyplay.com.asperteamapi.model.ActivitySector;
-import atproj.cyplay.com.asperteamapi.model.FacebookProfile;
 import atproj.cyplay.com.asperteamapi.model.Job;
 import atproj.cyplay.com.asperteamapi.model.Language;
 import atproj.cyplay.com.asperteamapi.model.User;
 import atproj.cyplay.com.asperteamapi.model.exception.BaseException;
 import atproj.cyplay.com.asperteamapi.picasso.CircleTransform;
 
+import com.cyplay.atproj.asperteam.facebook.IFacebook;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseResourceActivity;
 import com.cyplay.atproj.asperteam.ui.customview.ProfileTextItemView;
-import com.cyplay.atproj.asperteam.utils.FacebookManager;
 
 import atproj.cyplay.com.asperteamapi.util.CalendarUtil;
 import atproj.cyplay.com.asperteamapi.util.StringHelper;
@@ -67,7 +66,7 @@ public class MyProfileActivity extends BaseResourceActivity {
     Picasso picasso;
 
     @Inject
-    FacebookManager facebook;
+    IFacebook facebook;
 
     @BindView(R.id.photoImage)
     ImageView photoImage;
@@ -348,7 +347,9 @@ public class MyProfileActivity extends BaseResourceActivity {
         @Override
         public void onSuccess(LoginResult loginResult) {
             showPreloader();
-            facebook.meRequest(meRequestCallback);
+            facebook.getProfile((profile) ->  {
+                hidePreloader();
+            });
         }
 
         @Override
@@ -358,13 +359,6 @@ public class MyProfileActivity extends BaseResourceActivity {
 
         @Override
         public void onError(FacebookException error) {
-            hidePreloader();
-        }
-    };
-
-    protected FacebookManager.MeRequestCallback meRequestCallback = new FacebookManager.MeRequestCallback() {
-        @Override
-        public void onCompleted(FacebookProfile profile) {
             hidePreloader();
         }
     };

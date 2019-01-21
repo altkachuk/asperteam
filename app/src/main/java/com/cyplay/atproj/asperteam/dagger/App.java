@@ -38,12 +38,9 @@ import atproj.cyplay.com.asperteamapi.dagger.module.AdminOkHttpClientModule;
 import atproj.cyplay.com.asperteamapi.dagger.module.ProfileAdminInteractorModule;
 import atproj.cyplay.com.asperteamapi.dagger.module.ApplicationModule;
 
-import com.cyplay.atproj.asperteam.dagger.component.NotificationComponent;
-import com.cyplay.atproj.asperteam.dagger.component.DaggerNotificationComponent;
 import com.cyplay.atproj.asperteam.dagger.module.BandModule;
 import atproj.cyplay.com.asperteamapi.dagger.module.CrossknowledgeModule;
 import com.cyplay.atproj.asperteam.dagger.module.FacebookModule;
-import com.cyplay.atproj.asperteam.dagger.module.NotificationModule;
 
 import atproj.cyplay.com.asperteamapi.dagger.module.InteractorModule;
 import atproj.cyplay.com.asperteamapi.dagger.module.NetModule;
@@ -76,7 +73,6 @@ public class App extends Application {
     ProfileAdminInteractorComponent profileAdminInteractorComponent;
     BandComponent bandComponent;
     CrossknowledgeComponent crossknowledgeComponent;
-    NotificationComponent notificationComponent;
 
 
     @Override
@@ -153,11 +149,6 @@ public class App extends Application {
                 .userSettingsComponent(userSettingsComponent)
                 .crossknowledgeModule(new CrossknowledgeModule())
                 .build();
-
-        notificationComponent = DaggerNotificationComponent.builder()
-                .applicationComponent(applicationComponent)
-                .notificationModule(new NotificationModule())
-                .build();
     }
 
     public void inject(Object object) {
@@ -170,7 +161,6 @@ public class App extends Application {
                 .profileAdminInteractorComponent(profileAdminInteractorComponent)
                 .bandComponent(bandComponent)
                 .crossknowledgeComponent(crossknowledgeComponent)
-                .notificationComponent(notificationComponent)
                 .build();
 
         try {

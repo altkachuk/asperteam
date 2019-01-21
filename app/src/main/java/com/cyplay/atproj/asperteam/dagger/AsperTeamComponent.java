@@ -10,7 +10,6 @@ import atproj.cyplay.com.asperteamapi.dagger.component.PicassoComponent;
 import atproj.cyplay.com.asperteamapi.dagger.component.UserSettingsComponent;
 import atproj.cyplay.com.asperteamapi.dagger.scope.RuntimeScope;
 
-import com.cyplay.atproj.asperteam.dagger.component.NotificationComponent;
 import com.cyplay.atproj.asperteam.service.BandService;
 import com.cyplay.atproj.asperteam.ui.activity.AddSituationActivity;
 import com.cyplay.atproj.asperteam.ui.activity.BandActivity;
@@ -66,8 +65,7 @@ import dagger.Component;
         InteractorComponent.class,
         ProfileAdminInteractorComponent.class,
         BandComponent.class,
-        CrossknowledgeComponent.class,
-        NotificationComponent.class})
+        CrossknowledgeComponent.class})
 
 @Singleton
 public interface AsperTeamComponent {

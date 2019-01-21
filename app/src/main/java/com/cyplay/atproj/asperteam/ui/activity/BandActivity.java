@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.cyplay.atproj.asperteam.R;
+import com.cyplay.atproj.asperteam.band.IBand;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseBandActivity;
-import com.cyplay.atproj.asperteam.band.BandManager;
 
 import javax.inject.Inject;
 
@@ -18,9 +18,6 @@ import javax.inject.Inject;
  */
 
 public class BandActivity extends BaseBandActivity {
-
-    @Inject
-    BandManager bandManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -51,9 +51,6 @@ public class StressHomeFragment extends BaseResourceFragment implements StressVi
     @Inject
     StressInteractor stressInteractor;
 
-    @Inject
-    NotificationSender notificationSender;
-
     @BindView(R.id.stressScaleView)
     StressScaleView stressScaleView;
 
@@ -79,7 +76,7 @@ public class StressHomeFragment extends BaseResourceFragment implements StressVi
         _mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
         _stressPresenter = new StressPresenter(getActivity().getApplicationContext(),
-                this, userSettings, profileInteractor, profileAdminInteractor, notificationSender);
+                this, userSettings, profileInteractor, profileAdminInteractor);
     }
 
     public void onNewStressLevel(final int stressLevel) {

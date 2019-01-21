@@ -25,7 +25,7 @@ import io.reactivex.disposables.Disposable;
  * Created by andre on 20-Nov-18.
  */
 
-public class BandManager {
+public class BandManager implements IBand {
 
     private final String TAG = "BandManager";
     private final static int time_delay = 5 * 60 * 1000; // 5 minutes
@@ -41,7 +41,7 @@ public class BandManager {
     private String _id;
     private float _levelMax;
 
-    private HashMap<BandManagerListener, BandManagerListener> _listeners = new HashMap<>();
+    private HashMap<BandListener, BandListener> _listeners = new HashMap<>();
 
     private IdleManager _idleManager;
     private WaitingManager _notificationManager;
@@ -63,7 +63,7 @@ public class BandManager {
 
         _notificationManager = new WaitingManager();
         _notificationManager.setListener(() -> {
-            for (BandManagerListener listener : _listeners.keySet()) {
+            for (BandListener listener : _listeners.keySet()) {
                 listener.onStressDetected(_notifyData);
             }
             _idleManager.sleep();
@@ -76,13 +76,13 @@ public class BandManager {
         _levelMax = levelMax / 100f;
     }
 
-    public void addListener(BandManagerListener listener) {
+    public void addListener(BandListener listener) {
         if (_listeners.get(listener) == null) {
             _listeners.put(listener, listener);
         }
     }
 
-    public void removeListener(BandManagerListener listener) {
+    public void removeListener(BandListener listener) {
         if (_listeners.get(listener) != null) {
             _listeners.remove(listener);
         }
@@ -102,7 +102,7 @@ public class BandManager {
             stressDisposable = stressObservable.subscribe(
                 stressData -> {
                     Log.i(TAG, stressData.toString());
-                    for (BandManagerListener listener : _listeners.keySet()) {
+                    for (BandListener listener : _listeners.keySet()) {
                         listener.onUpdate();
                     }
 
@@ -116,7 +116,7 @@ public class BandManager {
                     }
 
                     if (ApplicationUtil.isAppOnForeground(_context)) {
-                        for (BandManagerListener listener : _listeners.keySet()) {
+                        for (BandListener listener : _listeners.keySet()) {
                             listener.onDataUpdate(stressData);
                         }
                     }
@@ -150,7 +150,7 @@ public class BandManager {
 
     private void stressDetected(StressDetector.StressData stressData) {
         if (ApplicationUtil.isAppOnForeground(_context) && !_notificationManager.isActive()) {
-            for (BandManagerListener listener : _listeners.keySet()) {
+            for (BandListener listener : _listeners.keySet()) {
                 listener.onStressDetected(stressData);
             }
             _idleManager.sleep();
@@ -173,12 +173,6 @@ public class BandManager {
                 ;
             }
         });
-    }
-
-    public interface BandManagerListener {
-        void onDataUpdate(StressDetector.StressData stressData);
-        void onStressDetected(StressDetector.StressData stressData);
-        void onUpdate();
     }
 }
 

@@ -27,7 +27,6 @@ public class StressPresenter {
     private UserSettingsUtil _userSettings;
     private ProfileInteractor _profileInteractor;
     private ProfileAdminInteractor _profileAdminInteractor;
-    private NotificationSender _notificationSender;
 
     private User _patient;
     private User _coach;
@@ -35,13 +34,12 @@ public class StressPresenter {
     private int _stressLevel;
     private int _rri;
 
-    public StressPresenter(Context context, StressView stressView, UserSettingsUtil userSettings, ProfileInteractor profileInteractor, ProfileAdminInteractor profileAdminInteractor, NotificationSender notificationSender) {
+    public StressPresenter(Context context, StressView stressView, UserSettingsUtil userSettings, ProfileInteractor profileInteractor, ProfileAdminInteractor profileAdminInteractor) {
         _context = context;
         _stressView = stressView;
         _userSettings = userSettings;
         _profileInteractor = profileInteractor;
         _profileAdminInteractor = profileAdminInteractor;
-        _notificationSender = notificationSender;
 
         getPatient(userSettings.getId());
     }
@@ -140,7 +138,8 @@ public class StressPresenter {
         text = text.replace("_username_", username);
 
         new MailgunSender().run(from, _coach.getEmail(), mainCoachEmail, subject, text, null);
-        if (_coachFirebaseToken != null)
-            _notificationSender.run(_patient.getId(), _coachFirebaseToken, subject, text, "PatientActivity");
+        if (_coachFirebaseToken != null) {
+            new NotificationSender(_context.getString(R.string.server_key)).run(_patient.getId(), _coachFirebaseToken, subject, text, "PatientActivity");
+        }
     }
 }

@@ -54,7 +54,7 @@ public class StressDetector {
         public final float rmssd;
         public final float stressLevel;
 
-        private StressData(int rri, float rmssd, float stressLevel) {
+        public StressData(int rri, float rmssd, float stressLevel) {
             this.rri = rri;
             this.rmssd = rmssd;
             this.stressLevel = stressLevel;

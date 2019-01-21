@@ -9,11 +9,11 @@ import android.os.Build;
 import android.util.Log;
 
 import com.cyplay.atproj.asperteam.R;
-import com.cyplay.atproj.asperteam.band.AtBand;
 import com.cyplay.atproj.asperteam.band.AtBandUtil;
+import com.cyplay.atproj.asperteam.band.BandConnectionRule;
+import com.cyplay.atproj.asperteam.band.IBand;
 import com.cyplay.atproj.asperteam.service.BandService;
 import com.cyplay.atproj.asperteam.ui.RequestCode;
-import com.cyplay.atproj.asperteam.band.BandManager;
 
 import javax.inject.Inject;
 
@@ -28,7 +28,7 @@ public class BaseBandActivity extends BaseActivity {
     private final String TAG = "BaseActivity";
 
     @Inject
-    public BandManager bandManager;
+    public IBand band;
 
     @Inject
     UserSettingsUtil userSettings;
@@ -52,21 +52,17 @@ public class BaseBandActivity extends BaseActivity {
     }
 
     protected void connect() {
-        if (!AtBandUtil.isAppInstalled(getApplicationContext())) {
-            return;
+        switch (BandConnectionRule.getConnectionPermission(getApplicationContext())) {
+            case ACCEPT:
+                startService();
+                break;
+            case BLUETOOTH_DISABLED:
+                enableBluetooth();
+                break;
+            case NOT_ISTALLED:
+                break;
+
         }
-
-        Log.i(TAG, "connect");
-
-        BluetoothManager bluetoothManager = (BluetoothManager) this.getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-
-        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-            enableBluetooth();
-            return;
-        }
-
-        startService();
     }
 
     private void startService() {
@@ -80,7 +76,7 @@ public class BaseBandActivity extends BaseActivity {
                 startService(bandServiceIntent);
             }
 
-            bandManager.registerListener(this);
+            band.registerListener(this);
         }
     }
 

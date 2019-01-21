@@ -1,5 +1,6 @@
 package com.cyplay.atproj.asperteam.dagger.component;
 
+import com.cyplay.atproj.asperteam.band.IBand;
 import com.cyplay.atproj.asperteam.dagger.module.BandModule;
 import com.cyplay.atproj.asperteam.band.BandManager;
 
@@ -14,5 +15,5 @@ import dagger.Component;
 
 @Component(modules = {BandModule.class}, dependencies = {ApplicationComponent.class, UserSettingsComponent.class, InteractorComponent.class})
 public interface BandComponent {
-    BandManager bandManager();
+    IBand bandManager();
 }

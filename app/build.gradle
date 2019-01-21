@@ -48,6 +48,12 @@ android {
             buildConfigField 'String', 'HOST', '\"{\\"pp\\" : \\"https://api.anticipstress.eu/\\",\\"release\\": \\"https://api.anticipstress.eu/\\",\\"debug\\":\\"https://api.anticipstress.eu/\\"}\"'
             dimension "default"
         }
+        mock {
+            applicationId = "com.cyplay.atproj.asperteam"
+
+            buildConfigField 'String', 'HOST', '\"{\\"pp\\" : \\"https://api.anticipstress.eu/\\",\\"release\\": \\"https://api.anticipstress.eu/\\",\\"debug\\":\\"https://api.anticipstress.eu/\\"}\"'
+            dimension "default"
+        }
     }
     // support lambda expression
     compileOptions {

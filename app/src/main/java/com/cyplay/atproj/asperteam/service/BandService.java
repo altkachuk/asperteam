@@ -11,9 +11,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.cyplay.atproj.asperteam.R;
+import com.cyplay.atproj.asperteam.band.BandListener;
+import com.cyplay.atproj.asperteam.band.IBand;
 import com.cyplay.atproj.asperteam.dagger.App;
 import com.cyplay.atproj.asperteam.ui.activity.HomeActivity;
-import com.cyplay.atproj.asperteam.band.BandManager;
 import com.cyplay.atproj.asperteam.band.detector.StressDetector;
 
 import java.util.Timer;
@@ -34,9 +35,9 @@ public class BandService extends Service {
     private final String TAG = "BandService";
 
     @Inject
-    BandManager bandManager;
+    IBand band;
 
-    private BandManager.BandManagerListener _bandManagerListener;
+    private BandListener _bandManagerListener;
     private TimerDelay _timerDelay;
 
     @Override
@@ -86,10 +87,10 @@ public class BandService extends Service {
             }
 
 
-            bandManager.subscribe();
-            bandManager.connect();
+            band.subscribe();
+            band.connect();
 
-            _bandManagerListener = new BandManager.BandManagerListener() {
+            _bandManagerListener = new BandListener() {
                 @Override
                 public void onDataUpdate(StressDetector.StressData event) {
 
@@ -105,16 +106,16 @@ public class BandService extends Service {
                     _timerDelay.update();
                 }
             };
-            bandManager.addListener(_bandManagerListener);
+            band.addListener(_bandManagerListener);
 
             _timerDelay.setListener(new TimerDelayListener() {
                 @Override
                 public void onDelay() {
                     Log.i(TAG, "Delay");
                     // try to reconnect Bluetooth
-                    bandManager.subscribe();
-                    bandManager.connect();
-                    bandManager.registerListener();
+                    band.subscribe();
+                    band.connect();
+                    band.registerListener();
                 }
 
                 @Override
@@ -134,8 +135,8 @@ public class BandService extends Service {
 
     private void stopForegroundService() {
         _timerDelay.stop();
-        bandManager.removeListener(_bandManagerListener);
-        bandManager.stop();
+        band.removeListener(_bandManagerListener);
+        band.stop();
         stopForeground(true);
         stopSelf();
     }

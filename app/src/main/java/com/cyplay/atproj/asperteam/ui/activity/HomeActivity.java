@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.cyplay.atproj.asperteam.R;
+import com.cyplay.atproj.asperteam.band.BandListener;
 import com.cyplay.atproj.asperteam.ui.activity.base.BaseMenuActivity;
 import com.cyplay.atproj.asperteam.ui.fragment.StressHomeFragment;
-import com.cyplay.atproj.asperteam.band.BandManager;
 import com.cyplay.atproj.asperteam.band.detector.StressDetector;
 
 import atproj.cyplay.com.asperteamapi.util.UserSettingsUtil;
@@ -26,7 +26,7 @@ public class HomeActivity extends BaseMenuActivity {
 
     StressHomeFragment stressHomeFragment;
 
-    BandManager.BandManagerListener _bandManagerListener;
+    BandListener _bandManagerListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,8 @@ public class HomeActivity extends BaseMenuActivity {
     protected void onPause() {
         super.onPause();
 
-        bandManager.removeListener(_bandManagerListener);
-        bandManager.gotoIdle();
+        band.removeListener(_bandManagerListener);
+        band.gotoIdle();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class HomeActivity extends BaseMenuActivity {
         super.onResume();
 
         final Activity activity = this;
-        _bandManagerListener = new BandManager.BandManagerListener() {
+        band.addListener(new BandListener() {
             @Override
             public void onDataUpdate(StressDetector.StressData event) {
                 activity.runOnUiThread(new Runnable() {
@@ -85,9 +85,8 @@ public class HomeActivity extends BaseMenuActivity {
             public void onUpdate() {
                 ;
             }
-        };
-        bandManager.addListener(_bandManagerListener);
-        bandManager.gotoActive();
+        });
+        band.gotoActive();
     }
 
     @Override

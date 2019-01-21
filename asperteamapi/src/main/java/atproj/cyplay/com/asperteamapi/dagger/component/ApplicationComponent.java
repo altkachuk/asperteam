@@ -3,6 +3,8 @@ package atproj.cyplay.com.asperteamapi.dagger.component;
 import android.app.Application;
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import atproj.cyplay.com.asperteamapi.dagger.module.ApplicationModule;
 
 import dagger.Component;

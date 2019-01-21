@@ -132,7 +132,7 @@ public class BaseMenuActivity extends BaseBandActivity {
         String subject = getString(subjectRes).replace("_username_", username);
         String text = getString(textRes).replace("_username_", username);
 
-        new MailgunSender().run(from, to, subject, text, () -> {
+        new MailgunSender().run(from, to, cc, subject, text, () -> {
             hidePreloader();
         });
     }

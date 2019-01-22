@@ -67,6 +67,11 @@ public class User {
     }
 
     public String getStaffId(RoleType roleType) {
+        if (roleType == RoleType.COACH)
+            return coach_origin;
+        if (roleType == RoleType.COACH_PERMANENT)
+            return permanent_coach_origin;
+
         for (int i = 0; i < staff.size(); i++) {
             if (staff.get(i).getRoleType() == roleType) {
                 String url = staff.get(i).getUrl();
